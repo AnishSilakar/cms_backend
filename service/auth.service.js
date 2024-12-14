@@ -53,18 +53,26 @@ module.exports = {
                 message: "User not found",
             });
         }
-        const responsedata = await generateTokens(user);
-        const resData = {
-            email: user.email,
-            userId: user.id,
-            username: user.username,
-            token: responsedata.token,
-            expiresIn: responsedata.expiresIn,
-            refreshToken: responsedata.refreshToken,
-            refreshExpiresIn: responsedata.refreshExpiresIn,
-            // validTil: expirationDate.toISOString() // Return expiration time in ISO format
+
+        const isCorrectPassword = await bcrypt.compare(password, user.password);
+        if (!isCorrectPassword) {
+            return callBack({
+                message: "Invalid Password",
+            });
+        } else {
+            const responsedata = await generateTokens(user);
+            const resData = {
+                email: user.email,
+                userId: user.id,
+                username: user.username,
+                token: responsedata.token,
+                expiresIn: responsedata.expiresIn,
+                refreshToken: responsedata.refreshToken,
+                refreshExpiresIn: responsedata.refreshExpiresIn,
+                // validTil: expirationDate.toISOString() // Return expiration time in ISO format
+            }
+            return callBack(null, resData);
         }
-        return callBack(null, resData);
     },
     register: async (data, callBack) => {
         const {email, password, username} = data;
