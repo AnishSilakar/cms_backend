@@ -1,6 +1,5 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const db = require('./models/index');
 dotenv.config();
 const app = express();
 
