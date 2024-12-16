@@ -13,12 +13,11 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    const hashedPassword = await bcrypt.hash("password", 10);
     return await queryInterface.bulkInsert("users", [
       {
         username: "anishS",
         email: "anishS@example.com",
-        password: hashedPassword,
+        password: await bcrypt.hash("password", 10),
         createdAt: new Date(),
       },
     ]);
