@@ -4,7 +4,8 @@ const bcrypt = require("bcryptjs");
 
 module.exports = {
     index: async (data, callBack) => {
-        await models.User.findAll().then(users => {
+        await models.User.findAll({include: [models.People]}
+        ).then(users => {
             return callBack(null, users);
         }).catch(error => {
             return callBack(error);

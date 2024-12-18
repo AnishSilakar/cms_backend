@@ -21,6 +21,9 @@ module.exports = {
             address: {
                 type: Sequelize.STRING
             },
+            dateOfBirth:{
+                type: Sequelize.DATE
+            },
             userId: {type: Sequelize.INTEGER},
             createdAt: {
                 allowNull: false,

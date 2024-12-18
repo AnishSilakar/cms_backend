@@ -75,14 +75,42 @@ module.exports = {
         }
     },
     register: async (data, callBack) => {
-        const {email, password, username} = data;
-        const hashedPassword = await bcrypt.hash(data.password, 10);
+        const {email, password, people} = data;
+        const {dateOfBirth, address, gender, lastName, firstName} = people;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const username = firstName.concat(lastName);
         try {
-            const user = await models.User.findOrCreate({
-                where: {email: email},
-                defaults: {username, email, password: hashedPassword},
+            const user = await models.User.create({username, email, password: hashedPassword});
+            let image = null;
+            if (data?.file) {
+                image = await models.Image.create({
+                    name: data.file.originalname,
+                    filePath: data.file.filename,
+                    fileType: data.file.mimetype.split('/')[1]
+                })
+            }
+            if (user) {
+                const people = await models.People.create({
+                    firstName,
+                    lastName,
+                    address,
+                    gender,
+                    dateOfBirth,
+                    userId: user.id,
+                    imageId: image ? image.id : null
+                });
+                const resData = {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email,
+                    people: people.dataValues,
+                }
+                return callBack(null, resData);
+            }
+            return callBack({
+                message: "User not registered",
             });
-            return callBack(null, user);
+
         } catch (error) {
             return callBack(error);
         }

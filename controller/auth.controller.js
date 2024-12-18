@@ -13,7 +13,13 @@ module.exports = {
             }
         })
     }, register: async (req, res) => {
-        const data = await req.body;
+        // Step 1: Parse the outer object to access the 'data' string
+        let outerObject = req.body;
+
+        // Step 2: Parse the 'data' string into a JavaScript object
+        let data = JSON.parse(outerObject.data);
+        data.file = req.file;
+
         register(data, (err, results) => {
             if (err) {
                 return res.status(500).json({
@@ -28,7 +34,6 @@ module.exports = {
         const data = req.body;
         refreshAccessToken(data, (err, results) => {
             if (err) {
-                console.log(err);
                 res.status(err).json({
                     message: err.message
                 })

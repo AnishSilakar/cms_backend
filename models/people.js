@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // People.belongsTo(models.User);
+      People.belongsTo(models.User);
+      People.belongsTo(models.Image);
       // models.User.hasOne(Person);
       // People.hasOne(models.User);
     }
@@ -21,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     lastName: DataTypes.STRING,
     gender: DataTypes.ENUM('Male', 'Female', 'Other'),
     address: DataTypes.STRING,
-    userId:DataTypes.INTEGER
+    dateOfBirth:DataTypes.DATE,
+    userId:DataTypes.INTEGER,
+    imageId:DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'People',
