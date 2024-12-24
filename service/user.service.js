@@ -5,9 +5,11 @@ const bcrypt = require("bcryptjs");
 module.exports = {
     index: async (data, callBack) => {
         const userData = await models.User.findAll({
+            attributes: {exclude: ['password']},
             include: [
                 {
                     model: models.People,
+                    attributes: {exclude: ['ImageId', 'UserId']},
                     include: [models.Image]
                 }
             ]
