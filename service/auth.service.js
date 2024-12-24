@@ -84,8 +84,8 @@ module.exports = {
             let image = null;
             if (data?.file) {
                 image = await models.Image.create({
-                    name: data.file.originalname,
-                    filePath: data.file.filename,
+                    fileName: data.file.originalname,
+                    filePath: data.file.path,
                     fileType: data.file.mimetype.split('/')[1]
                 })
             }
