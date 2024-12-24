@@ -1,6 +1,6 @@
 const models = require("../models");
 const {insert} = require("./contactInformation.service");
-const {storeSingleImage} = require("./image.service");
+const {storeSingleImage, deleteFsFile} = require("./image.service");
 
 const getdata = async () => {
     return await models.GeneralSetting.findOne({
@@ -89,11 +89,17 @@ module.exports = {
                 imageId: favIcon ? favIcon.id : imageidold,
             });
             if (data?.file) {
+                //delete image from folder remain
+                const imageOlddata = await models.Image.findByPk(imageidold);
+                const val = await deleteFsFile(imageOlddata.filePath);
+                console.log("data: " + val);
                 await models.Image.destroy({where: {id: imageidold}});
             }
             const contactInfo = await models.ContactInformation.findOne({where: {id: genSetting.contactInformationId}});
             await contactInfo.update({country, province, city, landMark, mapUrl, email});
-            return callback(null, getdata());
+            getdata().then((result) => {
+                return callback(null, result);
+            });
 
         } catch (err) {
             return callback(err);

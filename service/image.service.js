@@ -21,5 +21,17 @@ module.exports = {
             return null;
         }
         return responseData;
+    },
+    deleteFsFile: async (imageName) => {
+        const mainFolder = __dirname;
+        const newPath = path.dirname(mainFolder);
+        const imagePath = path.join(newPath, 'public', imageName);
+        fs.unlink(imagePath, (err) => {
+            if (err) {
+                console.error(err);
+                return ;
+            }
+            // Image deleted successfully
+        });
     }
 }

@@ -16,7 +16,7 @@ var storage = multer.diskStorage({
         cb(null, imagePath + "/public/images");
     },
     filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-bezkoder-${file.originalname}`);
+        cb(null, `${Date.now()}-cms-file-${file.originalname}`);
     },
 });
 

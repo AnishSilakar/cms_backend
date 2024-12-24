@@ -2,10 +2,7 @@ const {insert, selectData, update} = require("../service/generalSetting.service"
 
 module.exports = {
     insert: async (req, res) => {
-        // Step 1: Parse the outer object to access the 'data' string
         let outerObject = req.body;
-
-        // Step 2: Parse the 'data' string into a JavaScript object
         let data = JSON.parse(outerObject.data);
         data.file = req.file;
         insert(data, (err, result) => {
@@ -28,13 +25,10 @@ module.exports = {
         })
     },
     update: async (req, res) => {
-        // Step 1: Parse the outer object to access the 'data' string
         let outerObject = req.body;
-
-        // Step 2: Parse the 'data' string into a JavaScript object
         let data = JSON.parse(outerObject.data);
         data.file = req.file;
-        data.id=req.params.id;
+        data.id = req.params.id;
         update(data, (err, result) => {
             if (err) {
                 return res.status(500).json({
