@@ -37,4 +37,11 @@ module.exports = {
             return callBack(error);
         });
     },
+    isUserExist: async (email, callBack) => {
+        const user = await models.User.findOne({attributes: {exclude: ['password']}, where: {email}});
+        if (!user) {
+            return callBack(null, {message: `User with ${email} not found`});
+        }
+        return callBack(null, user);
+    }
 }

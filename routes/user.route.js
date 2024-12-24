@@ -8,6 +8,7 @@ router.use(authMiddleware);
 router.get("/", userController.selectAll);
 router.delete("/:id", userController.delete);
 router.put("/:id", userController.update);
+router.post('/userExisted', userController.isUserExist);
 
 
 module.exports = router;

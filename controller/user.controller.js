@@ -1,4 +1,4 @@
-const {index, update, remove} = require("../service/user.service");
+const {index, update, remove, isUserExist} = require("../service/user.service");
 
 module.exports = {
     selectAll: async (req, res) => {
@@ -26,6 +26,13 @@ module.exports = {
         remove(id, (err, results) => {
             if (err) return res.status(500).json({message: err.message});
             return res.status(200).json(results);
+        })
+    },
+    isUserExist: async (req, res) => {
+        const email = req.body.email;
+        isUserExist(email, (err, result) => {
+            if (err) return res.status(500).json({message: err.message});
+            return res.status(200).json(result);
         })
     }
 }
