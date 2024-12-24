@@ -20,6 +20,7 @@ app.use(express.urlencoded({extended: true}));
 const port = process.env.PORT || 3000;
 
 app.use(cors(corsOptions));
+app.use(express.static('public'));
 
 app.use("/api", authRoute);
 app.use("/api/user", userRoute);
