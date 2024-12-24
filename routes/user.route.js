@@ -3,7 +3,7 @@ const userController = require('../controller/user.controller');
 const authMiddleware = require('../middleware/auth.middleware');
 const router = express.Router();
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
 
 router.get("/", userController.selectAll);
 router.delete("/:id", userController.delete);

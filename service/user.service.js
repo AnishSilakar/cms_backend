@@ -1,5 +1,6 @@
 const models = require('../models');
 const bcrypt = require("bcryptjs");
+const {where} = require("sequelize");
 
 
 module.exports = {
@@ -30,12 +31,28 @@ module.exports = {
             return callBack(error);
         });
     }, remove: async (id, callBack) => {
-        await models.TokenManager.destroy({where: {userId: id}});
-        await models.User.destroy({where: {id: id}}).then((user) => {
+        try {
+            await models.TokenManager.destroy({where: {userId: id}});
+            const user = await models.User.findOne({where: {id: id}}).then(async user => {
+                const people = await models.People.findOne({where: {userId: user.id}}).then(async people => {
+                    const image = await models.Image.findOne({where: {id: people.imageId}}).then(async image => {
+                        console.log(image);
+                        await models.Image.destroy({where: {id: people.imageId}});
+                    });
+                });
+                await models.People.destroy({where: {userId: user.id}});
+            });
+            await models.User.destroy({where: {id: id}});
             return callBack(null, {message: `User with ${id} id was deleted.`});
-        }).catch(error => {
+        } catch (error) {
             return callBack(error);
-        });
+        }
+        // await models.TokenManager.destroy({where: {userId: id}});
+        // await models.User.destroy({where: {id: id}}).then((user) => {
+        //     return callBack(null, {message: `User with ${id} id was deleted.`});
+        // }).catch(error => {
+        //     return callBack(error);
+        // });
     },
     isUserExist: async (email, callBack) => {
         const user = await models.User.findOne({attributes: {exclude: ['password']}, where: {email}});

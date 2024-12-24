@@ -11,8 +11,9 @@ const corsOptions = {
 
 //import routes
 const userRoute = require('./routes/user.route');
-const peopleRoute = require('./routes/people.route')
-const authRoute = require('./routes/auth.route')
+const peopleRoute = require('./routes/people.route');
+const authRoute = require('./routes/auth.route');
+const generalSettingsRoute = require('./routes/generalSetting.route');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -23,6 +24,7 @@ app.use(cors(corsOptions));
 app.use("/api", authRoute);
 app.use("/api/user", userRoute);
 app.use("/api/people", peopleRoute);
+app.use("/api/general_settings", generalSettingsRoute);
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
