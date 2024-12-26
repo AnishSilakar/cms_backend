@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
             // define association here
             Image.hasOne(models.People);
             Image.hasOne(models.GeneralSetting);
+            Image.hasOne(models.SocialMedia);
         }
     }
 
