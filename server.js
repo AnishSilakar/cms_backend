@@ -1,27 +1,27 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cors = require('cors');
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
 dotenv.config();
 const app = express();
 
 const corsOptions = {
-    origin: '*',
-    credentials: true,
+  origin: "*",
+  credentials: true,
 };
 
 //import routes
-const userRoute = require('./routes/user.route');
-const peopleRoute = require('./routes/people.route');
-const authRoute = require('./routes/auth.route');
-const generalSettingsRoute = require('./routes/generalSetting.route');
-const socialMediaRoute = require('./routes/socialMedia.route');
+const userRoute = require("./routes/user.route");
+const peopleRoute = require("./routes/people.route");
+const authRoute = require("./routes/auth.route");
+const generalSettingsRoute = require("./routes/generalSetting.route");
+const socialMediaRoute = require("./routes/socialMedia.route");
 
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 3000;
 
 app.use(cors(corsOptions));
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 app.use("/api", authRoute);
 app.use("/api/user", userRoute);
@@ -30,5 +30,5 @@ app.use("/api/general_settings", generalSettingsRoute);
 app.use("/api/socialMedia", socialMediaRoute);
 
 app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-})
+  console.log(`Listening on port ${port}`);
+});
