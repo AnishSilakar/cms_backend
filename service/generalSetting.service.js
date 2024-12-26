@@ -92,7 +92,6 @@ module.exports = {
                 //delete image from folder remain
                 const imageOlddata = await models.Image.findByPk(imageidold);
                 const val = await deleteFsFile(imageOlddata.filePath);
-                console.log("data: " + val);
                 await models.Image.destroy({where: {id: imageidold}});
             }
             const contactInfo = await models.ContactInformation.findOne({where: {id: genSetting.contactInformationId}});
