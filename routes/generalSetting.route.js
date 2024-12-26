@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const generalSettingController = require("../controller/generalSetting.controller");
 const upload = require("../middleware/upload");
+const authMiddleware = require("../middleware/auth.middleware");
+
+router.use(authMiddleware);
 
 router.get("/", generalSettingController.getData);
 router.post("/", upload.single("favIcon"), generalSettingController.insert);
