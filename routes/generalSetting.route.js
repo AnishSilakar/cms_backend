@@ -4,7 +4,7 @@ const generalSettingController = require("../controller/generalSetting.controlle
 const upload = require("../middleware/upload");
 const authMiddleware = require("../middleware/auth.middleware");
 
-// router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.get("/", generalSettingController.getData);
 router.post("/", upload.fields([{name: 'favIcon', maxCount: 1}, {
