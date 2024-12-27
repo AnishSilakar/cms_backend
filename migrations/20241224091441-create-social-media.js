@@ -15,8 +15,8 @@ module.exports = {
       links: {
         type: Sequelize.STRING,
       },
-      imageId: {
-        type: Sequelize.INTEGER,
+      faIcon: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

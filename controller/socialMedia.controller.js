@@ -1,9 +1,7 @@
 const {insert, selectAll, destroy, update} = require("../service/socialMedia.service");
 module.exports = {
     insert: async (req, res) => {
-        let outerObject = req.body;
-        let data = JSON.parse(outerObject.data);
-        data.files = req.files;
+        const data = req.body;
         insert(data, (err, result) => {
             if (err) {
                 return res.status(400).send({message: err});
@@ -29,9 +27,7 @@ module.exports = {
         })
     },
     update: async (req, res) => {
-        let outerObject = req.body;
-        let data = JSON.parse(outerObject.data);
-        data.file = req.file;
+        let data = req.body;
         data.id = req.params.id;
         update(data, (err, result) => {
             if (err) {

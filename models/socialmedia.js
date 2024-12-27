@@ -9,14 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      SocialMedia.belongsTo(models.Image);
     }
   }
   SocialMedia.init(
     {
       displayName: DataTypes.STRING,
       links: DataTypes.STRING,
-      imageId: DataTypes.INTEGER,
+      faIcon: DataTypes.STRING,
     },
     {
       sequelize,
