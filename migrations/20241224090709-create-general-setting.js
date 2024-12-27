@@ -30,6 +30,9 @@ module.exports = {
       imageId: {
         type: Sequelize.INTEGER,
       },
+      logoId: {
+        type: Sequelize.INTEGER,
+      },
       contactInformationId: {
         type: Sequelize.INTEGER,
       },

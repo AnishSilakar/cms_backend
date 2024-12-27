@@ -14,12 +14,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   ContactInformation.init(
     {
-      country: DataTypes.STRING,
-      province: DataTypes.STRING,
-      city: DataTypes.STRING,
       landMark: DataTypes.STRING,
       mapUrl: DataTypes.STRING,
       email: DataTypes.STRING,
+      phoneNumber: DataTypes.STRING,
     },
     {
       sequelize,

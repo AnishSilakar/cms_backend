@@ -3,7 +3,7 @@ const authMiddleware = require("../middleware/auth.middleware");
 const socialMediaController = require("../controller/socialMedia.controller");
 const router = express.Router();
 
-// router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.get("/", socialMediaController.selectAll);
 router.post("/", socialMediaController.insert);

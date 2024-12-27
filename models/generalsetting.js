@@ -10,7 +10,16 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       GeneralSetting.belongsTo(models.ContactInformation);
-      GeneralSetting.belongsTo(models.Image);
+      GeneralSetting.belongsTo(models.Image, {
+        foreignKey: "imageId",
+        targetKey: "id",
+          as: 'favIcon'
+      });
+      GeneralSetting.belongsTo(models.Image, {
+        foreignKey: "logoId",
+        targetKey: "id",
+          as: 'logo'
+      });
     }
   }
   GeneralSetting.init(
@@ -22,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       secondaryColor: DataTypes.STRING,
       thirdColor: DataTypes.STRING,
       imageId: DataTypes.INTEGER,
+      logoId: DataTypes.INTEGER,
       contactInformationId: DataTypes.INTEGER,
     },
     {
