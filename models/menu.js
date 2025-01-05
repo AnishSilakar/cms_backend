@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Page extends Model {
+  class Menu extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,14 +11,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Menu.hasMany(models.Menu, {
+        foreignKey: 'parentMenuId',
+        as: 'subMenues' // This will allow you to access subcategories easily
+      });
     }
   }
-  Page.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
+  Menu.init({
+    pageId: DataTypes.INTEGER,
+    order: DataTypes.INTEGER,
+    isDisplay: DataTypes.BOOLEAN,
+    parentMenuId: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'Page',
+    modelName: 'Menu',
   });
-  return Page;
+  return Menu;
 };
