@@ -11,11 +11,16 @@ module.exports = {
       },
       title: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       description: {
         type: Sequelize.STRING,
-        allowNull: false,
+      },
+      link:{
+        type: Sequelize.STRING
+      },
+      isHomePage:{
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       createdAt: {
         allowNull: false,

@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   Page.init({
     title: DataTypes.STRING,
     description: DataTypes.STRING,
+    link: DataTypes.STRING,
+    isHomePage: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Page',

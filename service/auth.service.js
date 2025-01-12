@@ -17,14 +17,14 @@ const removeOldTokens = async (userId) => {
 
 const generateTokens = async (user) => {
   await removeOldTokens(user.id);
-  const expiresIn = "1h";
+  const expiresIn = "20s";
   const accessFulldate = new Date(Date.now() + (1 / 24) * 24 * 60 * 60 * 1000);
   // Generate Access Token
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
     expiresIn,
   });
   // Generate refresh token
-  const refreshExpiry = "2h";
+  const refreshExpiry = "35s";
   const refreshFulldate = new Date(Date.now() + (2 / 24) * 24 * 60 * 60 * 1000);
   const refreshToken = jwt.sign(
     { id: user.id },
