@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Menu extends Model {
     /**
@@ -12,19 +10,27 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Menu.hasMany(models.Menu, {
-        foreignKey: 'parentMenuId',
-        as: 'subMenues' // This will allow you to access subcategories easily
+        foreignKey: "parentMenuId",
+        as: "subMenues", // This will allow you to access subcategories easily
+      });
+      Menu.hasOne(models.Page, {
+        foreignKey: "id",
+        sourceKey: "pageId",
+        as: "page",
       });
     }
   }
-  Menu.init({
-    pageId: DataTypes.INTEGER,
-    order: DataTypes.INTEGER,
-    isDisplay: DataTypes.BOOLEAN,
-    parentMenuId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'Menu',
-  });
+  Menu.init(
+    {
+      pageId: DataTypes.INTEGER,
+      order: DataTypes.INTEGER,
+      isDisplay: DataTypes.BOOLEAN,
+      parentMenuId: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "Menu",
+    }
+  );
   return Menu;
 };

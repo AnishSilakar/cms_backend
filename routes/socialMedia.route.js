@@ -3,11 +3,9 @@ const authMiddleware = require("../middleware/auth.middleware");
 const socialMediaController = require("../controller/socialMedia.controller");
 const router = express.Router();
 
-router.use(authMiddleware);
-
 router.get("/", socialMediaController.selectAll);
-router.post("/", socialMediaController.insert);
-router.put("/:id", socialMediaController.update);
-router.delete("/:id", socialMediaController.delete);
+router.post("/", authMiddleware, socialMediaController.insert);
+router.put("/:id", authMiddleware, socialMediaController.update);
+router.delete("/:id", authMiddleware, socialMediaController.delete);
 
 module.exports = router;
