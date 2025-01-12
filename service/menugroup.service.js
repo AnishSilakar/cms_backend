@@ -10,15 +10,16 @@ class MenuGroupService {
     const menuGroup = await models.MenuGroup.findAll();
     await Promise.all(
       menuGroup.map(async (menu) => {
-        const ids = menu.pageIds.split(",").map((id) => parseInt(id, 10));
-        const pages = await models.Page.findAll({
+        const ids = menu.menuIds.split(",").map((id) => parseInt(id, 10));
+        const menus = await models.Menu.findAll({
           where: {
             id: {
               [Op.in]: ids,
             },
           },
+          include: [{ model: models.Page, as: "page" }],
         });
-        menu.pages = pages;
+        menu.menus = menus;
       })
     );
     return menuGroup;
