@@ -11,17 +11,12 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
       },
-      menuIds: {
+      pageIds: {
         type: Sequelize.STRING,
-      },
-      isMainHeader: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
-      isMainFooter: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

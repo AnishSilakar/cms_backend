@@ -50,4 +50,16 @@ module.exports = {
       return res.status(500).json({ message: `Error: ${error.message}` });
     }
   },
+  selectByName: async (req, res) => {
+    const data = req.body;
+    try {
+      const response = await MenuGroupService.selectByName(data);
+      if (!response) {
+        return res.status(500).json({ message: "Menu group not found" });
+      }
+      return res.status(200).json(response);
+    } catch (error) {
+      return res.status(500).json({ message: `Error: ${error.message}` });
+    }
+  },
 };

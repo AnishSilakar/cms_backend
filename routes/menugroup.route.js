@@ -7,5 +7,6 @@ router.post("/", authMiddleware, MenuGroupController.insert);
 router.get("/", MenuGroupController.getAll);
 router.put("/:id", authMiddleware, MenuGroupController.update);
 router.delete("/:id", authMiddleware, MenuGroupController.delete);
+router.post("/selectByName", authMiddleware, MenuGroupController.selectByName);
 
 module.exports = router;

@@ -14,10 +14,8 @@ module.exports = (sequelize, DataTypes) => {
   MenuGroup.init(
     {
       name: DataTypes.STRING,
-      menuIds: DataTypes.STRING,
-      isMainHeader: DataTypes.BOOLEAN,
-      isMainFooter: DataTypes.BOOLEAN,
-      menus: DataTypes.VIRTUAL,
+      pageIds: DataTypes.STRING,
+      pages: DataTypes.VIRTUAL,
     },
     {
       sequelize,
