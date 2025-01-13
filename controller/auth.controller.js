@@ -40,7 +40,7 @@ module.exports = {
     const data = req.body;
     refreshAccessToken(data, (err, results) => {
       if (err) {
-        res.status(err).json({
+        res.status(500).json({
           message: err.message,
         });
       } else {
