@@ -123,7 +123,7 @@ module.exports = {
       return callBack(error);
     }
   },
-  refreshAccessToken: async (data, callback, status) => {
+  refreshAccessToken: async (data, callback) => {
     const refreshToken = data.refreshToken;
     const results = {
       message: "Missing token",

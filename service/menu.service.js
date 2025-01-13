@@ -1,5 +1,4 @@
 const models = require("../models");
-const { newStoreSingleImage } = require("./image.service");
 
 class MenuService {
   async getAll() {
