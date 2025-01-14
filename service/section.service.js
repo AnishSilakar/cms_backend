@@ -5,27 +5,21 @@ const { Op } = require("sequelize");
 class SectionService {
   insert = async (data) => {
     let content = data.content;
+    let images = data.multiFiles;
+    let imageIndex = data.imageIndex;
     try {
       const section = await models.Section.create(data);
-      content.sectionId = section.id;
-      if (data.singleFile) {
-        let singleFile = data.singleFile[0];
-        singleFile.caption = content.caption;
-        const image = await newStoreSingleImage(singleFile);
-        content.imageId = image.id;
-      }
-      if (data.multiFile) {
-        let multiFiles = data.multiFile;
-        let imageIds = [];
-        for (let i = 0; i < multiFiles.length; i++) {
-          multiFiles[i].caption = content.captions[i];
-          const image = await newStoreSingleImage(multiFiles[i]);
-          imageIds.push(image.id);
+      for (let i = 0; i < content.length; i++) {
+        let image = null;
+        if (imageIndex.includes(i + 1)) {
+          const newIdx = imageIndex.indexOf(i + 1);
+          images[newIdx].caption = content[i].caption;
+          image = await newStoreSingleImage(images[newIdx]);
         }
-        content.multipleImageIds = imageIds.join(",");
+        content[i].imageId = image ? image.id : null;
+        content[i].sectionId = section.id;
+        await models.SectionContent.create(content[i]);
       }
-      const sectionContent = await models.SectionContent.create(content);
-      section.sectionContent = sectionContent;
       return section;
     } catch (error) {
       return error.message;
@@ -37,13 +31,13 @@ class SectionService {
       return null;
     }
     for (let i = 0; i < section.length; i++) {
-      const sectionContent = await this.getSectionContents(section[i].id);
-      section[i].sectionContent = sectionContent;
+      const sectionContents = await this.getSectionContents(section[i].id);
+      section[i].sectionContents = sectionContents;
     }
     return section;
   };
   getSectionContents = async (id) => {
-    const sectionContent = await models.SectionContent.findOne({
+    return await models.SectionContent.findAll({
       where: {
         sectionId: id,
       },
@@ -54,22 +48,6 @@ class SectionService {
         },
       ],
     });
-    if (sectionContent) {
-      const ids = sectionContent.multipleImageIds
-        .split(",")
-        .map((id) => parseInt(id, 10));
-      if (ids.length > 0) {
-        const images = await models.Image.findAll({
-          where: {
-            id: {
-              [Op.in]: ids,
-            },
-          },
-        });
-        sectionContent.multipleImages = images;
-      }
-    }
-    return sectionContent;
   };
   update = async (data) => {
     return await models.Section.update(data, {

@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       description: DataTypes.STRING,
       isMultiple: DataTypes.BOOLEAN,
-      sectionContent: DataTypes.VIRTUAL,
+      isSlider: DataTypes.BOOLEAN,
+      sectionContents: DataTypes.VIRTUAL,
     },
     {
       sequelize,

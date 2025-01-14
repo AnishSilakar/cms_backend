@@ -4,15 +4,14 @@ module.exports = {
   insert: async (req, res) => {
     let outerObject = req.body;
     let data = JSON.parse(outerObject.data);
-    data.singleFile = req.files.file;
-    data.multiFile = req.files.files;
+    data.multiFiles = req.files.files;
     const result = await sectionService.insert(data);
     if (!result) {
       return res.status(400).json({
         message: "Failed to create section",
       });
     }
-    res.status(201).json(result);
+    res.status(201).json({ message: "Section created successfully" });
   },
   getAll: async (req, res) => {
     const result = await sectionService.getAll();

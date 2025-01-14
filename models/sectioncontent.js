@@ -22,10 +22,8 @@ module.exports = (sequelize, DataTypes) => {
       subTitle: DataTypes.STRING,
       description: DataTypes.STRING,
       imageId: DataTypes.INTEGER,
-      multipleImageIds: DataTypes.STRING,
       link: DataTypes.STRING,
       sectionId: DataTypes.INTEGER,
-      multipleImages: DataTypes.VIRTUAL,
     },
     {
       sequelize,

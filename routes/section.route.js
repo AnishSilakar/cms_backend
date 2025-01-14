@@ -10,7 +10,6 @@ router.get("/", sectionController.getAll);
 router.post(
   "/",
   upload.fields([
-    { name: "file", maxCount: 1 },
     {
       name: "files",
       maxCount: 10,

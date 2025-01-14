@@ -58,4 +58,19 @@ module.exports = {
       // Image deleted successfully
     });
   },
+  delete: async (id) => {
+    const image = await models.Image.findByPk(id);
+    if (!image) {
+      return null;
+    }
+    const imagePath = path.join(process.cwd(), "public", image.filePath);
+    fs.unlink(imagePath, async (err) => {
+      if (err) {
+        console.error(err);
+        return null;
+      }
+      await image.destroy();
+      return true;
+    });
+  },
 };

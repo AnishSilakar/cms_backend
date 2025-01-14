@@ -21,9 +21,6 @@ module.exports = {
       imageId: {
         type: Sequelize.INTEGER,
       },
-      multipleImageIds: {
-        type: Sequelize.STRING,
-      },
       link: {
         type: Sequelize.STRING,
       },
