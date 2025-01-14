@@ -19,6 +19,7 @@ module.exports = {
       fileName: data.file.originalname,
       filePath: relativePath,
       fileType: data.file.mimetype.split("/")[1],
+      caption: data.file.caption ? data.file.caption : null,
     });
     if (!responseData) {
       return null;
@@ -38,6 +39,7 @@ module.exports = {
       fileName: data.originalname,
       filePath: relativePath,
       fileType: data.mimetype.split("/")[1],
+      caption: data.caption ? data.caption : null,
     });
     if (!responseData) {
       return null;

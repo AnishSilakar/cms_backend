@@ -18,6 +18,7 @@ const socialMediaRoute = require("./routes/socialMedia.route");
 const pageRoute = require("./routes/page.route");
 const menusRoute = require("./routes/menu.route");
 const menuGroupRoute = require("./routes/menugroup.route");
+const sectionRoute = require("./routes/section.route");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -34,6 +35,7 @@ app.use("/api/socialMedia", socialMediaRoute);
 app.use("/api/page", pageRoute);
 app.use("/api/menus", menusRoute);
 app.use("/api/menuGroup", menuGroupRoute);
+app.use("/api/section", sectionRoute);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

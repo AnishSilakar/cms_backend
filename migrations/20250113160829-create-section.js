@@ -2,25 +2,22 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Images", {
+    await queryInterface.createTable("Sections", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      fileName: {
+      title: {
         type: Sequelize.STRING,
       },
-      filePath: {
+      description: {
         type: Sequelize.STRING,
       },
-      fileType: {
-        type: Sequelize.STRING,
-      },
-      caption: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      isMultiple: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,
@@ -33,6 +30,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Images");
+    await queryInterface.dropTable("Sections");
   },
 };

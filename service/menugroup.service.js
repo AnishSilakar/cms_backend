@@ -1,5 +1,5 @@
 const models = require("../models");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 
 class MenuGroupService {
   async insert(params) {
@@ -12,15 +12,20 @@ class MenuGroupService {
     const menuGroup = await models.MenuGroup.findAll();
     await Promise.all(
       menuGroup.map(async (menu) => {
+        let pageArray = [];
         const ids = menu.pageIds.split(",").map((id) => parseInt(id, 10));
-        const pages = await models.Page.findAll({
-          where: {
-            id: {
-              [Op.in]: ids,
-            },
-          },
-        });
-        menu.pages = pages;
+        // const pages = await models.Page.findAll({
+        //   where: {
+        //     id: {
+        //       [Op.in]: ids,
+        //     },
+        //   },
+        // });
+        for (let i = 0; i < ids.length; i++) {
+          const page = await models.Page.findByPk(ids[i]);
+          pageArray.push(page);
+        }
+        menu.pages = pageArray;
       })
     );
     return menuGroup;
@@ -55,15 +60,13 @@ class MenuGroupService {
     }
     await Promise.all(
       menuGroup.map(async (menu) => {
+        let pageArray = [];
         const ids = menu.pageIds.split(",").map((id) => parseInt(id, 10));
-        const pages = await models.Page.findAll({
-          where: {
-            id: {
-              [Op.in]: ids,
-            },
-          },
-        });
-        menu.pages = pages;
+        for (let i = 0; i < ids.length; i++) {
+          const page = await models.Page.findByPk(ids[i]);
+          pageArray.push(page);
+        }
+        menu.pages = pageArray;
       })
     );
     return menuGroup[0];
