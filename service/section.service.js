@@ -37,48 +37,39 @@ class SectionService {
       return null;
     }
     for (let i = 0; i < section.length; i++) {
-      const sectionContent = await models.SectionContent.findOne({
-        where: {
-          sectionId: section[i].id,
-        },
-        include: [
-          {
-            model: models.Image,
-            as: "Image",
-          },
-        ],
-      });
-      if (sectionContent) {
-        const ids = sectionContent.multipleImageIds
-          .split(",")
-          .map((id) => parseInt(id, 10));
-        if (ids.length > 0) {
-          const images = await models.Image.findAll({
-            where: {
-              id: {
-                [Op.in]: ids,
-              },
-            },
-          });
-          sectionContent.multipleImages = images;
-        }
-      }
+      const sectionContent = await this.getSectionContents(section[i].id);
       section[i].sectionContent = sectionContent;
     }
     return section;
   };
-  selectById = async (id) => {
-    const section = await models.Section.findByPk(id);
-    if (!section) {
-      return null;
-    }
+  getSectionContents = async (id) => {
     const sectionContent = await models.SectionContent.findOne({
       where: {
         sectionId: id,
       },
+      include: [
+        {
+          model: models.Image,
+          as: "Image",
+        },
+      ],
     });
-    section.sectionContent = sectionContent;
-    return section;
+    if (sectionContent) {
+      const ids = sectionContent.multipleImageIds
+        .split(",")
+        .map((id) => parseInt(id, 10));
+      if (ids.length > 0) {
+        const images = await models.Image.findAll({
+          where: {
+            id: {
+              [Op.in]: ids,
+            },
+          },
+        });
+        sectionContent.multipleImages = images;
+      }
+    }
+    return sectionContent;
   };
   update = async (data) => {
     return await models.Section.update(data, {
