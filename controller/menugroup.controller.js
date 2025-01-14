@@ -54,7 +54,7 @@ module.exports = {
     const data = req.body;
     try {
       const response = await MenuGroupService.selectByName(data);
-      return res.status(200).json(response ? response : []);
+      return res.status(200).json(response);
     } catch (error) {
       return res.status(500).json({ message: `Error: ${error.message}` });
     }
