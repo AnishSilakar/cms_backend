@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class SectionContent extends Model {
     /**
@@ -11,19 +9,28 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      SectionContent.hasOne(models.Image, {
+        foreignKey: "id",
+        sourceKey: "imageId",
+        as: "Image",
+      });
     }
   }
-  SectionContent.init({
-    title: DataTypes.STRING,
-    subTitle: DataTypes.STRING,
-    description: DataTypes.STRING,
-    imageId: DataTypes.INTEGER,
-    multipleImageIds: DataTypes.STRING,
-    link: DataTypes.STRING,
-    sectionId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'SectionContent',
-  });
+  SectionContent.init(
+    {
+      title: DataTypes.STRING,
+      subTitle: DataTypes.STRING,
+      description: DataTypes.STRING,
+      imageId: DataTypes.INTEGER,
+      multipleImageIds: DataTypes.STRING,
+      link: DataTypes.STRING,
+      sectionId: DataTypes.INTEGER,
+      multipleImages: DataTypes.VIRTUAL,
+    },
+    {
+      sequelize,
+      modelName: "SectionContent",
+    }
+  );
   return SectionContent;
 };

@@ -1,5 +1,5 @@
 const models = require("../models");
-const { Op, where } = require("sequelize");
+const { Op } = require("sequelize");
 
 class MenuGroupService {
   async insert(params) {
