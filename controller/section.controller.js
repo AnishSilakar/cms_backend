@@ -11,7 +11,7 @@ module.exports = {
         message: "Failed to create section",
       });
     }
-    res.status(201).json({ message: "Section created successfully" });
+    res.status(200).json({ message: "Section created successfully" });
   },
   getAll: async (req, res) => {
     const result = await sectionService.getAll();
