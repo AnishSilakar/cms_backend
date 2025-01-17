@@ -58,7 +58,7 @@ module.exports = {
       // Image deleted successfully
     });
   },
-  delete: async (id) => {
+  deleteImage: async (id) => {
     const image = await models.Image.findByPk(id);
     if (!image) {
       return null;
@@ -72,5 +72,15 @@ module.exports = {
       await image.destroy();
       return true;
     });
+  },
+  updateCaption: async (data) => {
+    const { id, caption } = data;
+    const image = await models.Image.findByPk(id);
+    if (!image) {
+      return null;
+    }
+    image.caption = caption;
+    await image.save();
+    return image;
   },
 };

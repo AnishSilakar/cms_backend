@@ -1,6 +1,8 @@
 const models = require("../models");
-const { newStoreSingleImage } = require("./image.service");
+const { newStoreSingleImage, deleteImage } = require("./image.service");
 const { Op } = require("sequelize");
+const fs = require("fs");
+const { log } = require("console");
 
 class SectionService {
   insert = async (data) => {
@@ -56,12 +58,94 @@ class SectionService {
       },
     });
   };
-  delete = async (id) => {
-    return await models.Section.destroy({
+  updateContent = async (data) => {
+    const file = data.file;
+    const { title, subTitle, description, link } = data;
+    try {
+      const sectionContent = await models.SectionContent.findOne({
+        where: {
+          id: data.id,
+        },
+      });
+      if (!sectionContent) {
+        return null;
+      }
+      let image = null;
+      const imageId = sectionContent.imageId;
+      if (file) {
+        file.caption = data.caption;
+        image = await newStoreSingleImage(data.file[0]);
+      }
+      await sectionContent.update({
+        title,
+        subTitle,
+        description,
+        imageId: image ? image.id : imageId,
+        link,
+      });
+      if (imageId) {
+        await deleteImage(imageId);
+      }
+      return sectionContent;
+    } catch (error) {
+      return error.message;
+    }
+  };
+  deleteImage = async (id) => {
+    const sectionContent = await models.SectionContent.findOne({
       where: {
         id: id,
       },
     });
+    if (!sectionContent) {
+      return null;
+    }
+    try {
+      const imageId = sectionContent.imageId;
+      await sectionContent.update({
+        imageId: null,
+      });
+      const res = await deleteImage(imageId);
+      return sectionContent;
+    } catch (error) {
+      return error.message;
+    }
+  };
+  delete = async (id) => {
+    try {
+      const section = await models.Section.findByPk(id);
+      if (!section) {
+        return null;
+      }
+      const sectionContents = await models.SectionContent.findAll({
+        where: { sectionId: section.id },
+      });
+      for (const content of sectionContents) {
+        await this.deleteContent(content.id);
+      }
+      await section.destroy();
+      return section;
+    } catch (error) {
+      return error.message;
+    }
+  };
+  deleteContent = async (id) => {
+    try {
+      const result = await models.SectionContent.findOne({
+        where: { id: id },
+      });
+
+      if (result) {
+        const imageId = result.imageId;
+        const response = await models.SectionContent.destroy({
+          where: { id: result.id },
+        });
+        await deleteImage(imageId);
+        return response;
+      }
+    } catch (error) {
+      return error.message;
+    }
   };
 }
 
