@@ -78,4 +78,20 @@ module.exports = {
       .status(200)
       .json({ message: "Section Content Deleted successfully." });
   },
+  addContent: async (req, res) => {
+    let outerObject = req.body;
+    let data = JSON.parse(outerObject.data);
+    data.file = req.files.file;
+    console.log(data);
+    const result = await sectionService.addContent(data);
+    if (!result) {
+      return res.status(500).json({ message: "Failed to add section content" });
+    }
+    return res.status(200).json({ message: "Section Content Added" });
+  },
+  getSectionContents: async (req, res) => {
+    const sectionId = req.params.id;
+    const result = await sectionService.getContents(sectionId);
+    return res.status(200).json(result);
+  },
 };

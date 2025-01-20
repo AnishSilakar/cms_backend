@@ -41,6 +41,6 @@ app.use("/api/section", sectionRoute);
 app.use("/api/image", imageRoute);
 app.use("/api/pageSection", pageSectionRoute);
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0' ,() => {
   console.log(`Listening on port ${port}`);
 });

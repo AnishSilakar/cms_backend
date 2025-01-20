@@ -17,6 +17,12 @@ router.post(
   ]),
   sectionController.insert
 );
+router.post(
+  "/content/",
+  upload.fields([{ name: "file", maxCount: 1 }]),
+  sectionController.addContent
+);
+router.get("/content/:id", sectionController.getSectionContents);
 router.put("/:id", sectionController.update);
 router.put(
   "/content/:id",
