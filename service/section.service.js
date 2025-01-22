@@ -18,6 +18,7 @@ class SectionService {
           images[newIdx].caption = content[i].caption;
           image = await newStoreSignleImage(images[newIdx]);
         }
+        console.log(image);
         content[i].imageId = image ? image.id : null;
         content[i].sectionId = section.id;
         await models.SectionContent.create(content[i]);
