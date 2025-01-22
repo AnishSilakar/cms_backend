@@ -21,6 +21,7 @@ const menuGroupRoute = require("./routes/menugroup.route");
 const sectionRoute = require("./routes/section.route");
 const imageRoute = require("./routes/image.route");
 const pageSectionRoute = require("./routes/pageSection.route");
+const footerRoute = require("./routes/footer.route");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -40,7 +41,8 @@ app.use("/api/menuGroup", menuGroupRoute);
 app.use("/api/section", sectionRoute);
 app.use("/api/image", imageRoute);
 app.use("/api/pageSection", pageSectionRoute);
+app.use("/api/footer", footerRoute);
 
-app.listen(port, '0.0.0.0' ,() => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Listening on port ${port}`);
 });
