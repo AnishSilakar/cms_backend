@@ -13,15 +13,24 @@ module.exports = {
       }
       return res.status(200).send(result);
     } catch (error) {
-      const uniqueConstraintError = error.errors[0]; // Get the first error item
-      const errorMessage = uniqueConstraintError.message; // Extract the message
-      const fieldName = uniqueConstraintError.path; // Extract the field name that caused the error
-      return res
-        .status(500)
-        .send({ message: `${errorMessage} on field: ${fieldName}` });
+      throw new Error(error.message);
     }
   },
-  update: async (req, res) => {},
+  update: async (req, res) => {
+    const data = req.body;
+    try {
+      const result = await pageService.update(data);
+      if (!result) {
+        return res
+          .status(400)
+          .send({ message: "Unable to update page section" });
+      }
+      return res.status(200).send(result);
+    } catch (error) {
+      console.log(error);
+      // throw new Error(error.message);
+    }
+  },
   remove: async (req, res) => {},
   getAll: async (req, res) => {
     const result = await pageService.getAll();

@@ -1,10 +1,22 @@
 const models = require("../models");
 const { Sequelize } = require("sequelize");
 const sectionService = require("./section.service");
+const pagesection = require("../models/pagesection");
 
 class PageSectionService {
   insert = async (data) => {
-    return models.PageSection.bulkCreate(data);
+    const promises = [];
+    for (const datum of data) {
+      datum.sections.forEach((singleData, index) => {
+        const pageSection = {
+          pageId: datum.pageId,
+          order: index + 1,
+          sectionId: singleData,
+        };
+        promises.push(models.PageSection.create(pageSection));
+      });
+    }
+    return await Promise.all(promises);
   };
 
   getAll = async () => {
@@ -24,12 +36,31 @@ class PageSectionService {
     return newPages;
   };
 
-  remove = async (id) => {};
+  remove = async (id) => {
+    return await models.PageSection.destroy({ where: { pageId: id } });
+  };
 
-  update = async (data) => {};
+  update = async (data) => {
+    const promises = [];
+    const deleteData = await this.remove(data.pageId);
+    if (deleteData) {
+      data.sections.forEach((datum, index) => {
+        const pageSection = {
+          pageId: data.pageId,
+          order: index + 1,
+          sectionId: datum,
+        };
+        promises.push(models.PageSection.create(pageSection));
+      });
+    }
+    return await Promise.all(promises);
+  };
 
   selectByPageId = async (id) => {
-    const data = await models.PageSection.findAll({ where: { pageId: id } });
+    const data = await models.PageSection.findAll({
+      where: { pageId: id },
+      order: [["order", "ASC"]],
+    });
     if (data.length > 0) {
       let page = await models.Page.findByPk(id);
       const sections = [];
