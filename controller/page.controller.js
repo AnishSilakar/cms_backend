@@ -30,4 +30,8 @@ module.exports = {
         }
         return res.status(200).json(response);
     },
+    getNoLinkPages: async (req, res) => {
+        const response = await PageService.getNoLinkPages();
+        return res.status(200).json(response);
+    }
 }
