@@ -5,18 +5,7 @@ const pagesection = require("../models/pagesection");
 
 class PageSectionService {
   insert = async (data) => {
-    const promises = [];
-    for (const datum of data) {
-      datum.sections.forEach((singleData, index) => {
-        const pageSection = {
-          pageId: datum.pageId,
-          order: index + 1,
-          sectionId: singleData,
-        };
-        promises.push(models.PageSection.create(pageSection));
-      });
-    }
-    return await Promise.all(promises);
+    return await models.PageSection.bulkCreate(data);
   };
 
   getAll = async () => {
