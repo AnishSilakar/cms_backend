@@ -21,7 +21,6 @@ class PageSectionService {
     for (const page of pages) {
       newPages.push(await this.selectByPageId(page.pageId));
     }
-
     return newPages;
   };
 
@@ -61,6 +60,28 @@ class PageSectionService {
       return page;
     }
     return null;
+  };
+
+  getPagesWithoutSections = async () => {
+    const pagesWithSections = await models.PageSection.findAll({
+      attributes: ["pageId"],
+      group: ["pageId"],
+    });
+
+    const pageIdsWithSections = pagesWithSections.map((page) => page.pageId);
+
+    const pagesWithoutSections = await models.Page.findAll({
+      where: {
+        id: {
+          [Sequelize.Op.notIn]: pageIdsWithSections,
+        },
+        [Sequelize.Op.or]: [
+          { link: { [Sequelize.Op.is]: null } },
+          { link: { [Sequelize.Op.eq]: "" } },
+        ],
+      },
+    });
+    return pagesWithoutSections;
   };
 }
 
