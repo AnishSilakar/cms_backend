@@ -12,7 +12,13 @@ class Footer {
   };
 
   get = async () => {
-    return await models.Footer.findOne({ limit: 1 });
+    const footer = await models.Footer.findOne({
+      limit: 1,
+    });
+    if (footer) {
+      footer.image = await models.Image.findByPk(footer.imageId);
+    }
+    return footer;
   };
 
   update = async (data) => {
