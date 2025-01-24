@@ -18,8 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     Page.init({
         title: DataTypes.STRING,
         description: DataTypes.STRING,
-        link: DataTypes.STRING,
+        externalLink: DataTypes.STRING,
         isHomePage: DataTypes.BOOLEAN,
+        slug: DataTypes.STRING,
         sections: DataTypes.VIRTUAL
     }, {
         sequelize, modelName: "Page",

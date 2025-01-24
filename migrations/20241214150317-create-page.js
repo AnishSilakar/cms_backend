@@ -15,7 +15,7 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
       },
-      link:{
+      externalLink:{
         type: Sequelize.STRING,
         defaultValue: null,
         allowNull: true,
@@ -23,6 +23,9 @@ module.exports = {
       isHomePage:{
         type: Sequelize.BOOLEAN,
         defaultValue: false
+      },
+      slug:{
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

@@ -29,7 +29,7 @@ class PageService {
   getNoLinkPages = async () => {
     const pages = await models.Page.findAll({
       where: {
-        [Op.or]: [{ link: { [Op.is]: null } }, { link: { [Op.eq]: "" } }],
+        [Op.or]: [{ externalLink: { [Op.is]: null } }, { externalLink: { [Op.eq]: "" } }],
       },
     });
     return pages;
