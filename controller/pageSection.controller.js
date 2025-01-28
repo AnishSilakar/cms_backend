@@ -38,10 +38,13 @@ module.exports = {
   },
   selectByPageId: async (req, res) => {
     let pageId = req.params.pageId;
-    if (!pageId || pageId === "" || pageId === null) {
+    if (!pageId || isNaN(pageId)) {
       const homePage = await models.Page.findOne({
         where: { isHomePage: true },
       });
+      if (!homePage) {
+        return res.status(200).json({ message: "No Home Page Found" });
+      }
       pageId = homePage.id;
     }
     const results = await pageService.selectByPageId(pageId);
