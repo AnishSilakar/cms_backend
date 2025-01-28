@@ -54,6 +54,11 @@ class PageSectionService {
       const sections = [];
       for (const datum of data) {
         const section = await models.Section.findByPk(datum.sectionId);
+        if (section) {
+          section.sectionContents = await sectionService.getSectionContents(
+            section.id
+          );
+        }
         sections.push(section);
       }
       page.sections = sections;

@@ -1,5 +1,5 @@
 const pageService = require("../service/pageSection.service");
-const PageService = require("./menu.controller");
+const models = require("../models");
 
 module.exports = {
   insert: async (req, res) => {
@@ -37,7 +37,14 @@ module.exports = {
     return res.status(200).json(result);
   },
   selectByPageId: async (req, res) => {
-    const results = await pageService.selectByPageId(req.params.pageId);
+    let pageId = req.params.pageId;
+    if (!pageId || pageId === "" || pageId === null) {
+      const homePage = await models.Page.findOne({
+        where: { isHomePage: true },
+      });
+      pageId = homePage.id;
+    }
+    const results = await pageService.selectByPageId(pageId);
     return res.status(200).json(results);
   },
   getPages: async (req, res) => {
