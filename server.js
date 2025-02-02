@@ -1,6 +1,8 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const { sequelize } = require("./models"); // Import the sequelize instance
+
 dotenv.config();
 const app = express();
 
@@ -43,6 +45,24 @@ app.use("/api/image", imageRoute);
 app.use("/api/pageSection", pageSectionRoute);
 app.use("/api/footer", footerRoute);
 
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Listening on port ${port}`);
-});
+// Check database connection before starting the server
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Database connected successfully.");
+
+    // // Example of executing a raw query
+    // try {
+    //   const [results, metadata] = await sequelize.query("SELECT * FROM Users");
+    //   console.log("Raw query results:", results);
+    // } catch (error) {
+    //   console.error("Error executing raw query:", error);
+    // }
+
+    app.listen(port, "0.0.0.0", () => {
+      console.log(`Listening on port ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+  });
