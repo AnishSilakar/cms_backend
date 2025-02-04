@@ -80,22 +80,21 @@ class SectionService {
       if (!sectionContent) {
         return null;
       }
-      let image = null;
-      const imageId = sectionContent.imageId;
-      if (file) {
+      let imageId = sectionContent.imageId;
+      if (file && file.size !== 0) {
+        const oldId = imageId;
         file.caption = data.caption;
-        image = await newStoreSingleImage(data.file[0]);
+        const image = await newStoreSingleImage(data.file[0]);
+        imageId = image.id;
+        await deleteImage(oldId);
       }
       await sectionContent.update({
         title,
         subTitle,
         description,
-        imageId: image ? image.id : imageId,
+        imageId: imageId,
         link,
       });
-      if (imageId) {
-        await deleteImage(imageId);
-      }
       return sectionContent;
     } catch (error) {
       return error.message;
