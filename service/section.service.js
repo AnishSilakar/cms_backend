@@ -16,9 +16,8 @@ class SectionService {
         if (imageIndex.includes(i + 1)) {
           const newIdx = imageIndex.indexOf(i + 1);
           images[newIdx].caption = content[i].caption;
-          image = await newStoreSignleImage(images[newIdx]);
+          image = await newStoreSingleImage(images[newIdx]);
         }
-        console.log(image);
         content[i].imageId = image ? image.id : null;
         content[i].sectionId = section.id;
         await models.SectionContent.create(content[i]);
