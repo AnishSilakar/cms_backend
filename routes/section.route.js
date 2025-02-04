@@ -4,7 +4,7 @@ const sectionController = require("../controller/section.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const upload = require("../middleware/upload");
 
-// router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.get("/", sectionController.getAll);
 router.post(
