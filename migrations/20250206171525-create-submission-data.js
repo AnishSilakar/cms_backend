@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('submissionData', {
+    await queryInterface.createTable('SubmissionData', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       fieldOptionIds: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -30,7 +30,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-    await queryInterface.addConstraint('submissionData', {
+    await queryInterface.addConstraint('SubmissionData', {
       fields: ['formSubmissionId'],
       type: 'foreign key',
       name: 'fk_formSubmissionId',
@@ -41,7 +41,7 @@ module.exports = {
       onDelete: 'cascade',
       onUpdate: 'cascade'
     });
-    await queryInterface.addConstraint('submissionData', {
+    await queryInterface.addConstraint('SubmissionData', {
       fields: ['formFieldId'],
       type: 'foreign key',
       name: 'fk_formFieldId1',
@@ -54,6 +54,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('submissionData');
+    await queryInterface.dropTable('SubmissionData');
   }
 };

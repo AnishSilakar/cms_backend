@@ -11,11 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      FormSubmission.hasMany(models.SubmissionData, {
+        foreignKey: 'formSubmissionId',
+        as: 'submissionData'
+      });
     }
   }
   FormSubmission.init({
     formId: DataTypes.INTEGER,
-    submittedBy: DataTypes.STRING
+    submittedBy: DataTypes.STRING,
+    submissionDatas: DataTypes.VIRTUAL
   }, {
     sequelize,
     modelName: 'FormSubmission',

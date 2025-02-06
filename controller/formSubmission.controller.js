@@ -11,5 +11,13 @@ module.exports = {
         } catch (err) {
             return res.status(500).json({ message: `Error submitting form: ${err.message}` });
         }
+    },
+    getAll: async (req, res) => {
+        try {
+            const response = await FormSubmissionService.getAll();
+            return res.status(200).json(response);
+        } catch (err) {
+            return res.status(500).json({ message: `Error fetching form submissions: ${err.message}` });
+        }
     }
 }

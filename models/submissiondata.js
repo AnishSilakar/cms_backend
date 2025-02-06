@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class submissionData extends Model {
+  class SubmissionData extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,16 +11,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      SubmissionData.belongsTo(models.FormSubmission, {
+        foreignKey: 'formSubmissionId',
+        as: 'formSubmission'
+      });
     }
   }
-  submissionData.init({
+  SubmissionData.init({
     formSubmissionId: DataTypes.INTEGER,
     formFieldId: DataTypes.INTEGER,
     fieldValue: DataTypes.STRING,
-    fieldOptionIds: DataTypes.INTEGER
+    fieldOptionIds: DataTypes.STRING,
+    optionValues: DataTypes.VIRTUAL
   }, {
     sequelize,
-    modelName: 'submissionData',
+    modelName: 'SubmissionData',
   });
-  return submissionData;
+  return SubmissionData;
 };

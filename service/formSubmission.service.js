@@ -23,6 +23,19 @@ class FormSubmissionService {
             console.error(`Error submitting form: ${err}`);
         }
     }
+
+    getAll = async() => {
+        try {
+            const formSubmissions = await models.FormSubmission.findAll();
+            await Promise.all(formSubmissions.map(async (submission) => {
+                const submissionData = await SubmissionDataService.getData(submission.id);
+                submission.submissionDatas = submissionData;
+            }));
+            return formSubmissions;
+        } catch (err) {
+            console.error(`Error fetching form submissions: ${err}`);
+        }
+    }
 }
 
 module.exports = new FormSubmissionService();
