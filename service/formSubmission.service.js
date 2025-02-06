@@ -1,0 +1,28 @@
+const models = require('../models');
+const SubmissionDataService = require('./submissionData.service');
+
+class FormSubmissionService {
+    insert = async (data) => {
+        const { formId, submittedBy, submissionData } = data;
+        const transaction = await models.sequelize.transaction();
+
+        try {
+            const formSubmission = await models.FormSubmission.create(
+                { formId, submittedBy },
+                { transaction }
+            );
+            await Promise.all(submissionData.map(async (datum) => {
+                const { formFieldId, fieldValue, fieldOptionIds } = datum;
+                const subdata = { formSubmissionId: formSubmission.id, formFieldId, fieldValue, fieldOptionIds };
+                await models.submissionData.create(subdata, { transaction });
+            }));
+            await transaction.commit();
+            return formSubmission;
+        } catch (err) {
+            await transaction.rollback();
+            console.error(`Error submitting form: ${err}`);
+        }
+    }
+}
+
+module.exports = new FormSubmissionService();

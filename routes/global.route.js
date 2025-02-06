@@ -1,0 +1,36 @@
+const express = require('express');
+const userRoute = require("./user.route");
+const peopleRoute = require("./people.route");
+const authRoute = require("./auth.route");
+const generalSettingsRoute = require("./generalSetting.route");
+const socialMediaRoute = require("./socialMedia.route");
+const pageRoute = require("./page.route");
+const menusRoute = require("./menu.route");
+const menuGroupRoute = require("./menugroup.route");
+const sectionRoute = require("./section.route");
+const imageRoute = require("./image.route");
+const pageSectionRoute = require("./pageSection.route");
+const footerRoute = require("./footer.route");
+const fieldRoute = require("./field.route");
+const formRoute = require("./form.route");
+const formSubmissionRoute = require("./formSubmission.route");
+
+const router = express.Router();
+
+router.use("/", authRoute);
+router.use("/user", userRoute);
+router.use("/people", peopleRoute);
+router.use("/general_settings", generalSettingsRoute);
+router.use("/socialMedia", socialMediaRoute);
+router.use("/page", pageRoute);
+router.use("/menus", menusRoute);
+router.use("/menuGroup", menuGroupRoute);
+router.use("/section", sectionRoute);
+router.use("/image", imageRoute);
+router.use("/pageSection", pageSectionRoute);
+router.use("/footer", footerRoute);
+router.use("/field", fieldRoute);
+router.use("/form", formRoute);
+router.use("/formSubmission", formSubmissionRoute);
+
+module.exports = router;

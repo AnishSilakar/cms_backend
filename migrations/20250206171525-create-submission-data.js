@@ -52,17 +52,6 @@ module.exports = {
       onDelete: 'cascade',
       onUpdate: 'cascade'
     });
-    await queryInterface.addConstraint('submissionData', {
-      fields: ['fieldOptionIds'],
-      type: 'foreign key',
-      name: 'fk_fieldOptionIds2',
-      references: {
-        table: 'FormFieldOptions',
-        field: 'id'
-      },
-      onDelete: 'cascade',
-      onUpdate: 'cascade'
-    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('submissionData');
