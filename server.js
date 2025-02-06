@@ -24,7 +24,8 @@ const sectionRoute = require("./routes/section.route");
 const imageRoute = require("./routes/image.route");
 const pageSectionRoute = require("./routes/pageSection.route");
 const footerRoute = require("./routes/footer.route");
-const fieldRoute = require('./routes/field.route');
+const fieldRoute = require("./routes/field.route");
+const formRoute = require("./routes/form.route");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -45,7 +46,8 @@ app.use("/api/section", sectionRoute);
 app.use("/api/image", imageRoute);
 app.use("/api/pageSection", pageSectionRoute);
 app.use("/api/footer", footerRoute);
-app.use('/api/field', fieldRoute);
+app.use("/api/field", fieldRoute);
+app.use("/api/form", formRoute);
 
 // Check database connection before starting the server
 sequelize

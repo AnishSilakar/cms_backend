@@ -11,13 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      FormFieldOption.belongsTo(models.FormField, {
+        foreignKey: 'formFieldId',
+        as: 'formField'
+      });
     }
   }
   FormFieldOption.init({
     formFieldId: DataTypes.INTEGER,
     optionValue: DataTypes.STRING,
-    optionLabel: DataTypes.STRING,
-    order: DataTypes.INTEGER
+    optionLabel: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'FormFieldOption',

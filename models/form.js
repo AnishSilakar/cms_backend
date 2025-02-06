@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Form.hasMany(models.FormField, {
+        foreignKey: 'formId',
+        as: 'formFields'
+      });
     }
   }
   Form.init({

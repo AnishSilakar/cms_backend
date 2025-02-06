@@ -18,9 +18,6 @@ module.exports = {
       optionLabel: {
         type: Sequelize.STRING
       },
-      order: {
-        type: Sequelize.INTEGER
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -29,6 +26,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+    });
+    await queryInterface.addConstraint('FormFieldOptions', {
+      fields: ['formFieldId'],
+      type: 'foreign key',
+      name: 'fk_formFieldId',
+      references: {
+        table: 'FormFields',
+        field: 'id'
+      },
+      onDelete: 'cascade',
+      onUpdate: 'cascade'
     });
   },
   async down(queryInterface, Sequelize) {

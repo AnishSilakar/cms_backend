@@ -30,6 +30,39 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.addConstraint('submissionData', {
+      fields: ['formSubmissionId'],
+      type: 'foreign key',
+      name: 'fk_formSubmissionId',
+      references: {
+        table: 'FormSubmissions',
+        field: 'id'
+      },
+      onDelete: 'cascade',
+      onUpdate: 'cascade'
+    });
+    await queryInterface.addConstraint('submissionData', {
+      fields: ['formFieldId'],
+      type: 'foreign key',
+      name: 'fk_formFieldId1',
+      references: {
+        table: 'FormFields',
+        field: 'id'
+      },
+      onDelete: 'cascade',
+      onUpdate: 'cascade'
+    });
+    await queryInterface.addConstraint('submissionData', {
+      fields: ['fieldOptionIds'],
+      type: 'foreign key',
+      name: 'fk_fieldOptionIds2',
+      references: {
+        table: 'FormFieldOptions',
+        field: 'id'
+      },
+      onDelete: 'cascade',
+      onUpdate: 'cascade'
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('submissionData');
