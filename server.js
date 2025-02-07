@@ -22,6 +22,7 @@ app.use(express.static("public"));
 
 app.use('/api', globalRoutes);
 
+
 // Check database connection before starting the server
 sequelize
   .authenticate()

@@ -1,3 +1,4 @@
+const { log } = require('winston');
 const models = require('../models');
 const { Op } = require("sequelize");
 
@@ -17,6 +18,9 @@ class SubmissionDataService {
       where: { formSubmissionId }
     });
     await Promise.all(data.map(async (datum) => {
+      if (datum.fieldOptionIds === null || datum.fieldOptionIds === '') {
+        return;
+      }
       const fieldOptionIdsArray = datum.fieldOptionIds.split(',').map(id => parseInt(id, 10));
       const optionValues = await models.FormFieldOption.findAll({
         where: { id: { [Op.in]: fieldOptionIdsArray } }

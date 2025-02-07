@@ -1,5 +1,6 @@
 const models = require('../models');
 const SubmissionDataService = require('./submissionData.service');
+const MailService = require('./mail.service');
 
 class FormSubmissionService {
     insert = async (data) => {
@@ -14,8 +15,24 @@ class FormSubmissionService {
             await Promise.all(submissionData.map(async (datum) => {
                 const { formFieldId, fieldValue, fieldOptionIds } = datum;
                 const subdata = { formSubmissionId: formSubmission.id, formFieldId, fieldValue, fieldOptionIds };
-                await models.submissionData.create(subdata, { transaction });
+                await SubmissionDataService.insert(subdata, { transaction });
             }));
+            
+            // // send mail
+            // await MailService.sendMail({
+            //     "to": "aomineshooter@gmail.com",
+            //     "subject": "Test Email",
+            //     "name": "John Doe", 
+            //     "template": "email-template.ejs"
+            // });
+
+            // await MailService.sendMail({
+            //     "to": "anishsilakar5@gmail.com",
+            //     "subject": "Thank you for reaching out",
+            //     "name": "Genuine User",
+            //     "template": "thanks-contact.ejs"
+            // });
+
             await transaction.commit();
             return formSubmission;
         } catch (err) {
