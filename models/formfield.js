@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'formFieldId',
         as: 'formFieldOptions'
       });
+      FormField.belongsTo(models.Field, {
+        foreignKey: 'fieldTypeId',
+        as: 'fieldType'
+      });
     }
   }
   FormField.init({

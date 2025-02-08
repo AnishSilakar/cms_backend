@@ -56,6 +56,10 @@ class FormService {
               model: models.FormFieldOption,
               as: "formFieldOptions",
             },
+            {
+              model: models.Field,
+              as: "fieldType",
+            }
           ],
         },
       ],
