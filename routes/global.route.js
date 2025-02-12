@@ -14,13 +14,14 @@ const footerRoute = require("./footer.route");
 const fieldRoute = require("./field.route");
 const formRoute = require("./form.route");
 const formSubmissionRoute = require("./formSubmission.route");
-
+const statsRoute = require("./stats.route");
 const router = express.Router();
 
 router.use("/", authRoute);
 router.use("/user", userRoute);
 router.use("/people", peopleRoute);
 router.use("/general_settings", generalSettingsRoute);
+router.use("/stats", statsRoute);
 router.use("/socialMedia", socialMediaRoute);
 router.use("/page", pageRoute);
 router.use("/menus", menusRoute);
