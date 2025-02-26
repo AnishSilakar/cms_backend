@@ -66,6 +66,27 @@ class FormService {
     });
   };
 
+  findByPk = async (id) => {
+    return await models.Form.findByPk(id, {
+      include: [
+        {
+          model: models.FormField,
+          as: "formFields",
+          include: [
+            {
+              model: models.FormFieldOption,
+              as: "formFieldOptions",
+            },
+            {
+              model: models.Field,
+              as: "fieldType",
+            }
+          ],
+        },
+      ],
+    });
+  }
+
   delete = async (id) => {
     const transaction = await models.sequelize.transaction();
     try {

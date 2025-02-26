@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   ContactInformation.init(
     {
       landMark: DataTypes.STRING,
-      mapUrl: DataTypes.STRING,
+      mapUrl: DataTypes.TEXT,
       email: DataTypes.STRING,
       phoneNumber: DataTypes.STRING,
     },

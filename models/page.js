@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
         externalLink: DataTypes.STRING,
         isHomePage: DataTypes.BOOLEAN,
         slug: DataTypes.STRING,
-        sections: DataTypes.VIRTUAL
+        sections: DataTypes.VIRTUAL,
+        forms: DataTypes.VIRTUAL
     }, {
         sequelize, modelName: "Page",
     });

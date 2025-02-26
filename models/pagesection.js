@@ -16,7 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       pageId: DataTypes.INTEGER,
       sectionId: DataTypes.INTEGER,
       order: DataTypes.INTEGER,
+      formId: DataTypes.INTEGER,
       sections: DataTypes.VIRTUAL,
+      forms: DataTypes.VIRTUAL,
     },
     {
       sequelize,

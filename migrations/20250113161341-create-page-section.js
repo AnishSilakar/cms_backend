@@ -15,7 +15,6 @@ module.exports = {
       },
       sectionId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
       },
       order: {
         type: Sequelize.INTEGER,

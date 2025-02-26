@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       mapUrl: {
-        type: Sequelize.STRING,
+        type: DataTypes.TEXT,
       },
       email: {
         type: Sequelize.STRING,

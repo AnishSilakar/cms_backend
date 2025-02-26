@@ -2,6 +2,7 @@ const models = require("../models");
 const { Sequelize } = require("sequelize");
 const sectionService = require("./section.service");
 const pagesection = require("../models/pagesection");
+const formService = require("./form.service");
 
 class PageSectionService {
   insert = async (data) => {
@@ -52,16 +53,20 @@ class PageSectionService {
     if (data.length > 0) {
       let page = await models.Page.findByPk(id);
       const sections = [];
+      const forms = [];
       for (const datum of data) {
-        const section = await models.Section.findByPk(datum.sectionId);
-        if (section) {
-          section.sectionContents = await sectionService.getSectionContents(
-            section.id
-          );
+        if (datum.sectionId !== null){
+          const section = await models.Section.findByPk(datum.sectionId);
+          if (section) {
+            section.sectionContents = await sectionService.getSectionContents(
+              section.id
+            );
+          }
+          sections.push(section);
         }
-        sections.push(section);
       }
       page.sections = sections;
+      page.forms= forms;
       return page;
     }
     return null;
