@@ -12,7 +12,7 @@ module.exports = {
     await queryInterface.addConstraint('People', {
       fields: ['imageId'],
       type: 'foreign key',
-      name: 'People_Image_Association',
+      name: 'People_Image_Assoc',
       references:{
         table: 'images',
         field: 'id',
@@ -30,7 +30,7 @@ module.exports = {
     await queryInterface.removeConstraint('People', {
       fields: ['imageId'],
       type: 'foreign key',
-      name: 'People_Image_Association',
+      name: 'People_Image_Assoc',
       references:{
         table: 'images',
         field: 'id',

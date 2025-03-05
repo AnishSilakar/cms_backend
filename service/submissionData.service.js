@@ -15,9 +15,16 @@ class SubmissionDataService {
 
   getData = async (formSubmissionId) => {
     const data = await models.SubmissionData.findAll({
-      where: { formSubmissionId }
+      where: { formSubmissionId },
+      include: [
+        {
+          model: models.FormField,
+          as: 'formField'
+        }
+      ]
     });
     await Promise.all(data.map(async (datum) => {
+      console.log(datum);
       if (datum.fieldOptionIds === null || datum.fieldOptionIds === '') {
         return;
       }

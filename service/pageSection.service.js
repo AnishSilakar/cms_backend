@@ -55,7 +55,7 @@ class PageSectionService {
       const sections = [];
       const forms = [];
       for (const datum of data) {
-        if (datum.sectionId !== null){
+        if (datum.sectionId !== null) {
           const section = await models.Section.findByPk(datum.sectionId);
           if (section) {
             section.sectionContents = await sectionService.getSectionContents(
@@ -66,7 +66,7 @@ class PageSectionService {
         }
       }
       page.sections = sections;
-      page.forms= forms;
+      page.forms = forms;
       return page;
     }
     return null;

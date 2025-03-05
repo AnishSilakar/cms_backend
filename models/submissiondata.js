@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'formSubmissionId',
         as: 'formSubmission'
       });
+      SubmissionData.belongsTo(models.FormField, {
+        foreignKey: 'formFieldId',
+        as: 'formField'
+      });
     }
   }
   SubmissionData.init({

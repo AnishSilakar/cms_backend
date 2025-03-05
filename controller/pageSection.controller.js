@@ -13,7 +13,10 @@ module.exports = {
       }
       return res.status(200).json(result);
     } catch (error) {
-      throw new Error(error.message);
+      if (error.name === 'SequelizeUniqueConstraintError') {
+        return res.status(500).json({ message: 'Duplicate entry for unique constraint', details: error.errors });
+      }
+      return res.status(500).json({ message: error.message });
     }
   },
   update: async (req, res) => {
@@ -28,7 +31,8 @@ module.exports = {
       return res.status(200).json(result);
     } catch (error) {
       console.log(error);
-      // throw new Error(error.message);
+
+      return res.status(500).json({ message: "An error occurred while updating the page section", error: error.message });
     }
   },
   remove: async (req, res) => {},
