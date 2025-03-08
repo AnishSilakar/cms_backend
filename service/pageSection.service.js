@@ -1,5 +1,5 @@
 const models = require("../models");
-const { Sequelize } = require("sequelize");
+const { Sequelize, QueryTypes } = require("sequelize");
 const sectionService = require("./section.service");
 const pagesection = require("../models/pagesection");
 const formService = require("./form.service");
@@ -46,30 +46,44 @@ class PageSectionService {
   };
 
   selectByPageId = async (id) => {
-    const data = await models.PageSection.findAll({
-      where: { pageId: id },
-      order: [["order", "ASC"]],
+    let page = await models.Page.findByPk(id);
+    const query = `
+    SELECT 
+      s.id,
+      s.title ,
+      s.description ,
+      s.isMultiple ,
+      s.isSlider ,
+      ps.order,
+      s.createdAt,
+      s.updatedAt
+    FROM
+      pagesections ps
+    RIGHT JOIN sections s ON
+      ps.sectionId = s.id
+    WHERE
+        ps.pageId = :pageId
+    ORDER BY 
+        ps.order ASC
+  `;
+    const data = await models.sequelize.query(query, {
+      replacements: { pageId: id },
+      type: QueryTypes.SELECT,
     });
-    if (data.length > 0) {
-      let page = await models.Page.findByPk(id);
-      const sections = [];
-      const forms = [];
-      for (const datum of data) {
-        if (datum.sectionId !== null) {
-          const section = await models.Section.findByPk(datum.sectionId);
-          if (section) {
-            section.sectionContents = await sectionService.getSectionContents(
-              section.id
-            );
-          }
-          sections.push(section);
-        }
-      }
-      page.sections = sections;
-      page.forms = forms;
-      return page;
+    for (const section of data) {
+      section.sectionContents = await sectionService.getSectionContents(section.id);
     }
-    return null;
+    const formQuery = `
+    SELECT f.*, ps.order FROM pagesections ps RIGHT JOIN forms f ON ps.formId = f.id WHERE ps.pageId = :pageId ORDER BY ps.order ASC`;
+    const formResults = await models
+      .sequelize
+      .query(formQuery, {
+        replacements: { pageId: id },
+        type: QueryTypes.SELECT,
+      });
+      page.sections = data;
+      page.forms = formResults;
+    return page;
   };
 
   getPagesWithoutSections = async () => {
