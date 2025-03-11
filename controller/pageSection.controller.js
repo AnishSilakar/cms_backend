@@ -20,9 +20,10 @@ module.exports = {
     }
   },
   update: async (req, res) => {
-    const data = req.body;
+   const id = req.params.id;
+   const data = req.body;    
     try {
-      const result = await pageService.update(data);
+      const result = await pageService.update(id,data);
       if (!result) {
         return res
           .status(400)

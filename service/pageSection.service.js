@@ -29,15 +29,17 @@ class PageSectionService {
     return await models.PageSection.destroy({ where: { pageId: id } });
   };
 
-  update = async (data) => {
+  update = async (id,data) => {
     const promises = [];
-    const deleteData = await this.remove(data.pageId);
+    const deleteData = await this.remove(id);
     if (deleteData) {
-      data.sections.forEach((datum, index) => {
+      data.forEach((datum, index) => {
         const pageSection = {
-          pageId: data.pageId,
-          order: index + 1,
-          sectionId: datum,
+          pageId:id,
+          order: datum.order,
+          sectionId: datum.sectionId,
+          formId: datum.formId,
+          createdAt: new Date(),
         };
         promises.push(models.PageSection.create(pageSection));
       });
