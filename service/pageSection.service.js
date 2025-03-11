@@ -29,13 +29,13 @@ class PageSectionService {
     return await models.PageSection.destroy({ where: { pageId: id } });
   };
 
-  update = async (id,data) => {
+  update = async (id, data) => {
     const promises = [];
     const deleteData = await this.remove(id);
     if (deleteData) {
       data.forEach((datum, index) => {
         const pageSection = {
-          pageId:id,
+          pageId: id,
           order: datum.order,
           sectionId: datum.sectionId,
           formId: datum.formId,
@@ -73,18 +73,25 @@ class PageSectionService {
       type: QueryTypes.SELECT,
     });
     for (const section of data) {
-      section.sectionContents = await sectionService.getSectionContents(section.id);
+      section.sectionContents = await sectionService.getSectionContents(
+        section.id
+      );
     }
+    page.sections = data;
     const formQuery = `
     SELECT f.*, ps.order FROM pagesections ps RIGHT JOIN forms f ON ps.formId = f.id WHERE ps.pageId = :pageId ORDER BY ps.order ASC`;
-    const formResults = await models
-      .sequelize
-      .query(formQuery, {
-        replacements: { pageId: id },
-        type: QueryTypes.SELECT,
-      });
-      page.sections = data;
-      page.forms = formResults;
+    const formResults = await models.sequelize.query(formQuery, {
+      replacements: { pageId: id },
+      type: QueryTypes.SELECT,
+    });
+    if (formResults.length > 0) {
+      let formDatas = [];
+      for (const form of formResults) {
+        const formObj = await formService.findByPk(form.id);
+        formDatas.push(formObj);
+      }
+      page.forms = formDatas;
+    }
     return page;
   };
 
