@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Form.init({
     name: DataTypes.STRING,
-    description: DataTypes.STRING
+    description: DataTypes.STRING,
+    order: DataTypes.VIRTUAL
   }, {
     sequelize,
     modelName: 'Form',

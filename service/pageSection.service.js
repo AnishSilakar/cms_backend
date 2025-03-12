@@ -88,6 +88,8 @@ class PageSectionService {
       let formDatas = [];
       for (const form of formResults) {
         const formObj = await formService.findByPk(form.id);
+        formObj.order = form.order;
+        console.log(formObj);
         formDatas.push(formObj);
       }
       page.forms = formDatas;
