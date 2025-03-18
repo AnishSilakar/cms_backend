@@ -4,6 +4,7 @@ const FormSubmissionController = require('../controller/formSubmission.controlle
 const authMiddleware = require('../middleware/auth.middleware');
 
 router.get('/', authMiddleware, FormSubmissionController.getAll);
+router.get('/:formId', FormSubmissionController.getByFormId);
 router.post('/', FormSubmissionController.insert)
 
 module.exports = router;
