@@ -2,11 +2,12 @@ const nodemailer = require('nodemailer');
 const ejs = require('ejs');
 const path = require('path');
 const dotenv = require('dotenv');
+const { log } = require('console');
 dotenv.config();
 
 class MailService {
     sendMail = async (formParams) => {
-        const { to, subject, name , template} = formParams;
+        const { to, subject, body , template} = formParams;
     
         // Configure Nodemailer transporter
         const transporter = nodemailer.createTransport({
@@ -19,7 +20,7 @@ class MailService {
     
         // Render the email template using EJS
         const templatePath = path.join(__dirname, '../views/', template);
-        const emailHTML = await ejs.renderFile(templatePath, { name });
+        const emailHTML = await ejs.renderFile(templatePath, { body, subject });
     
         // Define email options
         const mailOptions = {

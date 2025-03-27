@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('FormFields', {
+    await queryInterface.createTable('FormTemplates', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,20 +12,11 @@ module.exports = {
       formId: {
         type: Sequelize.INTEGER
       },
-      label: {
+      subject: {
         type: Sequelize.STRING
       },
-      fieldTypeId: {
-        type: Sequelize.INTEGER
-      },
-      placeholder: {
+      template: {
         type: Sequelize.STRING
-      },
-      isRequired: {
-        type: Sequelize.BOOLEAN
-      },
-      order: {
-        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -36,24 +27,19 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-    await queryInterface.addConstraint('FormFields', {
-      fields: ['fieldTypeId'],
+    await queryInterface.addConstraint('FormTemplates', {
+      fields: ['formId'],
       type: 'foreign key',
-      name: 'fk_fieldTypeId',
+      name: 'fk_formId_formTemplates',
       references: {
-        table: 'Fields',
+        table: 'Forms',
         field: 'id'
       },
       onDelete: 'cascade',
       onUpdate: 'cascade'
     });
-    await queryInterface.addConstraint('FormFields', {
-      fields: ['label', 'formId'],
-      type: 'unique',
-      name: 'unique_label_formId'
-    });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('FormFields');
+    await queryInterface.dropTable('FormTemplates');
   }
 };

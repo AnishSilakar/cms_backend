@@ -24,7 +24,6 @@ class SubmissionDataService {
       ]
     });
     await Promise.all(data.map(async (datum) => {
-      console.log(datum);
       if (datum.fieldOptionIds === null || datum.fieldOptionIds === '') {
         return;
       }
@@ -35,6 +34,14 @@ class SubmissionDataService {
       datum.optionValues = optionValues;
     }));
     return data;
+  }
+
+  getFormSubmisionCustomData = async (formSubmissionId, formFieldId) => {
+    const response =  await models.SubmissionData.findOne({
+      where: { formSubmissionId, formFieldId }
+    });
+    return response;
+    
   }
 }
 

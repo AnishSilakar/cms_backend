@@ -15,6 +15,7 @@ const fieldRoute = require("./field.route");
 const formRoute = require("./form.route");
 const formSubmissionRoute = require("./formSubmission.route");
 const statsRoute = require("./stats.route");
+const formTemplate = require("./formTemplate.route");
 const router = express.Router();
 
 router.use("/", authRoute);
@@ -33,5 +34,6 @@ router.use("/footer", footerRoute);
 router.use("/field", fieldRoute);
 router.use("/form", formRoute);
 router.use("/formSubmission", formSubmissionRoute);
+router.use("/formTemplate", formTemplate);
 
 module.exports = router;
