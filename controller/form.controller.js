@@ -3,7 +3,10 @@ module.exports = {
     insert : async (req, res) => {
         const data = req.body;
         const formdata = await FormService.insert(data);
-        if(formdata){
+        if (formdata ==0){
+            return res.status(500).json({message:"Only one email field is allowed"});
+        }
+        else if(formdata){
             return res.status(200).json({message:"Form inserted Successfully"});
         }
         return res.status(500).json({message:"Something went wrong"});

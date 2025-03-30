@@ -5,7 +5,7 @@ module.exports = {
         try {
             const response = await FormSubmissionService.insert(data);
             if (response) {
-                await FormSubmissionService.sendEmail(response.formId, response.id, response.submittedBy);
+                await FormSubmissionService.sendEmail(response.formId, response.id);
                 return res.status(200).json({ message: 'Form submitted successfully' });
             }
             return res.status(500).json({ message: 'Something went wrong' });

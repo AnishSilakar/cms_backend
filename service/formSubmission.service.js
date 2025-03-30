@@ -2,6 +2,8 @@ const models = require("../models");
 const SubmissionDataService = require("./submissionData.service");
 const MailService = require("./mail.service");
 const FormTemplates = require("./formTemplate.service");
+const GeneralSetting = require("./generalSetting.service");
+const Helper = require("../helper/helper");
 
 class FormSubmissionService {
   insert = async (data) => {
@@ -33,22 +35,57 @@ class FormSubmissionService {
     }
   };
 
-  sendEmail = async (formId, submissionId, email) => {
-    //get form tempplate to send mail
-    const formTemplates = await FormTemplates.getTemplates(formId);
-    if (formTemplates.length > 0) {
-      for (const templateObj of formTemplates) {
-        const { to, subject, template, templateFile } = templateObj;
-        const updatedTemplate = await this.replaceSpecialTags(template, formId, submissionId);
-        await MailService.sendMail({
-          to: email,
-          subject,
-          body: updatedTemplate,
-          template: "email-template.ejs",
-        });
+  sendEmail = async (formId, submissionId) => {
+    const getEmail = await models.Field.findOne({
+      where: { name: "email" },
+    });
+    const getSubmissionData = await models.sequelize.query(
+      `SELECT s.* 
+       FROM formfields f 
+       LEFT JOIN submissiondata s 
+       ON f.id = s.formFieldId 
+       WHERE f.formId = :formId 
+       AND f.fieldTypeId = :fieldTypeId 
+       AND s.formSubmissionId = :formSubmissionId`,
+      {
+        replacements: {
+          formId: formId,
+          fieldTypeId: getEmail.id,
+          formSubmissionId: submissionId,
+        },
+        type: models.sequelize.QueryTypes.SELECT,
+      }
+    );
+    if (getSubmissionData.length > 0) {
+      {
+        const email = getSubmissionData[0].fieldValue;
+        //get form tempplate to send mail
+        const formTemplates = await FormTemplates.getTemplates(formId);
+        if (formTemplates.length > 0) {
+          for (const templateObj of formTemplates) {
+            const { to, subject, template, templateFile } = templateObj;
+            // Email signature
+            const generalSetting = await Helper.getEmailSignature();
+            const updatedTemplate = await this.replaceSpecialTags(template, formId, submissionId);
+            const emailSignature = `
+            <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333; line-height: 1.5; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px;">
+              <p style="margin: 0; font-weight: bold;">Best regards,</p>
+              <p style="margin: 0; font-size: 16px; color: #555;">${generalSetting.name}</p>
+              <p style="margin: 0; color: #666;">${generalSetting.email} | ${generalSetting.phone}</p>
+              <p style="margin: 0; color: #777;">${generalSetting.landmark}</p>
+            </div>`;
+            await MailService.sendMail({
+              to: email,
+              subject,
+              body: updatedTemplate,
+              template: "email-template.ejs",
+              emailSignature
+            });
+          }
+        }
       }
     }
-  }
+  };
 
   replaceSpecialTags = async (input, formId, id) => {
     // Regular expression to find all {{%}} tags
@@ -64,7 +101,7 @@ class FormSubmissionService {
       if (content.includes(content)) {
         const getFormfield = await models.FormField.findOne({
           where: { formId, label: content },
-        });        
+        });
         if (getFormfield !== null) {
           const getSubmissionData = await SubmissionDataService.getFormSubmisionCustomData(
             id,

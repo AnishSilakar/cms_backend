@@ -7,7 +7,7 @@ dotenv.config();
 
 class MailService {
     sendMail = async (formParams) => {
-        const { to, subject, body , template} = formParams;
+        const { to, subject, body , template, emailSignature} = formParams;
     
         // Configure Nodemailer transporter
         const transporter = nodemailer.createTransport({
@@ -20,7 +20,7 @@ class MailService {
     
         // Render the email template using EJS
         const templatePath = path.join(__dirname, '../views/', template);
-        const emailHTML = await ejs.renderFile(templatePath, { body, subject });
+        const emailHTML = await ejs.renderFile(templatePath, { body, subject , emailSignature});
     
         // Define email options
         const mailOptions = {
