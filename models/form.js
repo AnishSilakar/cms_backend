@@ -20,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
   Form.init({
     name: DataTypes.STRING,
     description: DataTypes.STRING,
-    order: DataTypes.VIRTUAL
+    order: DataTypes.VIRTUAL,
+    formId: DataTypes.VIRTUAL,
   }, {
     sequelize,
     modelName: 'Form',

@@ -117,25 +117,31 @@ class FormService {
   };
 
   findAll = async () => {
-    return await models.Form.findAll({
-      include: [
-        {
-          model: models.FormField,
-          as: "formFields",
-          order: ['formFields', 'order', 'DESC'],
-          include: [
-            {
-              model: models.FormFieldOption,
-              as: "formFieldOptions",
-            },
-            {
-              model: models.Field,
-              as: "fieldType",
-            }
-          ],
-        },
-      ],
-    });
+    try {
+      return await models.Form.findAll({
+        include: [
+          {
+            model: models.FormField,
+            as: "formFields",
+            order: ['formFields', 'order', 'DESC'],
+            include: [
+              {
+                model: models.FormFieldOption,
+                as: "formFieldOptions",
+              },
+              {
+                model: models.Field,
+                as: "fieldType",
+              }
+            ],
+          },
+        ],
+      });
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+      
+    }
   };
 
   findByPk = async (id) => {
