@@ -4,6 +4,8 @@ const MailService = require("./mail.service");
 const FormTemplates = require("./formTemplate.service");
 const GeneralSetting = require("./generalSetting.service");
 const Helper = require("../helper/helper");
+const cacheKey = "formSubmissionCacheKey";
+const CacheService = require("./cache.service");
 
 class FormSubmissionService {
   insert = async (data) => {
@@ -118,8 +120,12 @@ class FormSubmissionService {
 
 
   getAll = async () => {
-    try {
-      const formSubmissions = await models.FormSubmission.findAll();
+    const cacheData = await CacheService.get(cacheKey);
+    if (cacheData) {
+      console.log("Cache hit for form submissions");
+      return cacheData;
+    }
+    const formSubmissions = await models.FormSubmission.findAll();
       await Promise.all(
         formSubmissions.map(async (submission) => {
           const submissionData = await SubmissionDataService.getData(
@@ -128,10 +134,22 @@ class FormSubmissionService {
           submission.submissionDatas = submissionData;
         })
       );
-      return formSubmissions;
-    } catch (err) {
-      console.error(`Error fetching form submissions: ${err}`);
-    }
+    await CacheService.set(cacheKey, formSubmissions, 600);
+    return formSubmissions;
+    // try {
+    //   const formSubmissions = await models.FormSubmission.findAll();
+    //   await Promise.all(
+    //     formSubmissions.map(async (submission) => {
+    //       const submissionData = await SubmissionDataService.getData(
+    //         submission.id
+    //       );
+    //       submission.submissionDatas = submissionData;
+    //     })
+    //   );
+    //   return formSubmissions;
+    // } catch (err) {
+    //   console.error(`Error fetching form submissions: ${err}`);
+    // }
   };
 
   getByFormId = async (formId) => {
