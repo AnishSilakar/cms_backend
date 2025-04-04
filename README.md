@@ -76,12 +76,12 @@ The application will be available at http://localhost:3000.
 2. Open PowerShell or CMD and run:
    - docker run --name my-redis -d -p 6379:6379 redis
 3. Verify Redis is Running
-  3.1 **Check running containers:**
+  - **Check running containers:**
       - docker ps
-  3.2 **or test Redis using:**
+  - **or test Redis using:**
       - docker exec -it my-redis redis-cli ping and output must be : <b>PONG</b>
 4. Start and stop redis server
-   4.1 **Start my-redis redis container**
+   - **Start my-redis redis container**
       - docker start my-redis
-   4.2 **Stop my-redis redis container**
+   - **Stop my-redis redis container**
       - docker stop my-redis
