@@ -30,6 +30,7 @@ class FormSubmissionService {
         })
       );
       await transaction.commit();
+      await CacheService.del(cacheKey); // Clear the cache after insertion
       return formSubmission;
     } catch (err) {
       await transaction.rollback();

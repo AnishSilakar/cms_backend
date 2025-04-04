@@ -5,6 +5,9 @@ const {
     deleteFsFile,
     newStoreSingleImage,
 } = require("./image.service");
+const cacheKey = "generalSettingCacheKey";
+const CacheService = require("./cache.service");
+const { log } = require("winston");
 
 const getdata = async (id) => {
     return await models.GeneralSetting.findOne({
@@ -68,8 +71,14 @@ module.exports = {
         }
     },
     selectData: async (data, callback) => {
+        const cacheData = await CacheService.get(cacheKey);
+        if (cacheData && Object.keys(cacheData).length > 0) {
+            console.log("Cache hit for general settings");
+            return callback(null, cacheData);
+        }
         getdata()
-            .then((result) => {
+            .then(async (result) => {
+                await CacheService.set(cacheKey, result, 600);
                 return callback(null, result);
             })
             .catch((err) => {
@@ -133,7 +142,8 @@ module.exports = {
                 email,
                 phoneNumber
             });
-            getdata().then((result) => {
+            await CacheService.del(cacheKey);
+            getdata().then(async (result) => {
                 return callback(null, result);
             });
         } catch (err) {

@@ -5,7 +5,8 @@ class CacheService {
     if (typeof value === 'object') {
       value = JSON.stringify(value);
     }
-    return await redis.setex(`central:${key}`, ttl, value);
+     // Use `set` with the `EX` option for TTL
+     return await redis.set(`central:${key}`, value, { EX: ttl });
   }
 
   static async get(key) {
