@@ -1,5 +1,7 @@
 const pageService = require("../service/pageSection.service");
 const models = require("../models");
+const cacheKey = "pageSectionCacheKey";
+const CacheService = require("../service/cache.service");
 
 module.exports = {
   insert: async (req, res) => {
@@ -52,7 +54,14 @@ module.exports = {
       }
       pageId = homePage.id;
     }
+    let newCacheKey = `${cacheKey}-${pageId}`;
+    const cacheExist = await CacheService.get(newCacheKey);
+    if (cacheExist) {
+      console.log("Cache hit for page sections");
+      return res.status(200).json(cacheExist);
+    }
     const results = await pageService.selectByPageId(pageId);
+    await CacheService.set(newCacheKey, results, 600);
     return res.status(200).json(results);
   },
   getPages: async (req, res) => {

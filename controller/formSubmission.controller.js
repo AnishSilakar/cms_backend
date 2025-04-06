@@ -31,5 +31,13 @@ module.exports = {
             return res.status(500).json({ message: `Error fetching form submissions: ${err.message}` });
         }
 
+    },
+    testMail: async (req, res) => {
+        try {
+            const response = await FormSubmissionService.sendEmail(2,19);
+            return res.status(200).json(response);
+        } catch (err) {
+            return res.status(500).json({ message: `Error sending test mail: ${err.message}` });
+        }
     }
 }

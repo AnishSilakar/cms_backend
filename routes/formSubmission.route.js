@@ -5,6 +5,7 @@ const authMiddleware = require('../middleware/auth.middleware');
 
 router.get('/', authMiddleware, FormSubmissionController.getAll);
 router.get('/:formId', FormSubmissionController.getByFormId);
-router.post('/', FormSubmissionController.insert)
+router.post('/', FormSubmissionController.insert);
+router.post('/testMail', FormSubmissionController.testMail);
 
 module.exports = router;

@@ -82,7 +82,6 @@ module.exports = {
     let outerObject = req.body;
     let data = JSON.parse(outerObject.data);
     data.file = req.files.file;
-    console.log(data);
     const result = await sectionService.addContent(data);
     if (!result) {
       return res.status(500).json({ message: "Failed to add section content" });

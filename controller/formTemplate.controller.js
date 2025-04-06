@@ -17,10 +17,7 @@ module.exports = {
         const data = req.params.formId;
         try {
             const response = await FormSubmissionService.getTemplates(data);
-            if (response) {
-                return res.status(200).json(response);
-            }
-            return res.status(500).json({ message: 'Something went wrong' });
+            return res.status(200).json(response);
         }
         catch (err) {
             return res.status(500).json({ message: `Error retrieving form: ${err.message}` });

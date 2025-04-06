@@ -64,27 +64,25 @@ class FormSubmissionService {
         const email = getSubmissionData[0].fieldValue;
         //get form tempplate to send mail
         const formTemplates = await FormTemplates.getTemplates(formId);
-        if (formTemplates.length > 0) {
-          for (const templateObj of formTemplates) {
-            const { to, subject, template, templateFile } = templateObj;
-            // Email signature
-            const generalSetting = await Helper.getEmailSignature();
-            const updatedTemplate = await this.replaceSpecialTags(template, formId, submissionId);
-            const emailSignature = `
+        if (formTemplates !== null) {
+          const { subject, template } = formTemplates;
+          // Email signature
+          const generalSetting = await Helper.getEmailSignature();
+          const updatedTemplate = await this.replaceSpecialTags(template, formId, submissionId);
+          const emailSignature = `
             <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333; line-height: 1.5; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px;">
               <p style="margin: 0; font-weight: bold;">Best regards,</p>
               <p style="margin: 0; font-size: 16px; color: #555;">${generalSetting.name}</p>
               <p style="margin: 0; color: #666;">${generalSetting.email} | ${generalSetting.phone}</p>
               <p style="margin: 0; color: #777;">${generalSetting.landmark}</p>
             </div>`;
-            await MailService.sendMail({
-              to: email,
-              subject,
-              body: updatedTemplate,
-              template: "email-template.ejs",
-              emailSignature
-            });
-          }
+          await MailService.sendMail({
+            to: email,
+            subject,
+            body: updatedTemplate,
+            template: "email-template.ejs",
+            emailSignature
+          });
         }
       }
     }
@@ -93,40 +91,38 @@ class FormSubmissionService {
   replaceSpecialTags = async (input, formId, id) => {
     // Regular expression to find all {{%}} tags
     const regex = /\{\{(.*?)\}\}/g;
-
-    // Check if the string contains any {{}} tags
-    let match;
-    while ((match = regex.exec(input)) !== null) {
-      const tag = match[0]; // Full matched tag {{...}}
-      const content = match[1]; // Inside the {{}} (e.g., Full-Name, Email, etc.)
-      console.log(tag, content);
-      // Check if the content is {{%}} or similar
-      if (content.includes(content)) {
-        const getFormfield = await models.FormField.findOne({
-          where: { formId, label: content },
-        });
-        if (getFormfield !== null) {
-          const getSubmissionData = await SubmissionDataService.getFormSubmisionCustomData(
-            id,
-            getFormfield.id
-          );
-          if (getSubmissionData !== null) {
-            input = input.replace(tag, getSubmissionData.fieldValue);
+      // Check if the string contains any {{}} tags
+      let match;
+      while ((match = regex.exec(input)) !== null) {
+        const tag = match[0]; // Full matched tag {{...}}
+        const content = match[1]; // Inside the {{}} (e.g., Full-Name, Email, etc.)
+        // Check if the content is {{%}} or similar        
+        if (input.includes(content)) {
+          const getFormfield = await models.FormField.findOne({
+            where: { formId, label: content },
+          });
+          if (getFormfield !== null) {
+            const getSubmissionData = await SubmissionDataService.getFormSubmisionCustomData(
+              id,
+              getFormfield.id
+            );
+            if (getSubmissionData !== null) {
+              input = input.replace(tag, getSubmissionData.fieldValue);
+            }
           }
         }
       }
+      return input;
     }
-    return input;
-  }
 
 
-  getAll = async () => {
-    const cacheData = await CacheService.get(cacheKey);
-    if (cacheData) {
-      console.log("Cache hit for form submissions");
-      return cacheData;
-    }
-    const formSubmissions = await models.FormSubmission.findAll();
+    getAll = async () => {
+      const cacheData = await CacheService.get(cacheKey);
+      if (cacheData) {
+        console.log("Cache hit for form submissions");
+        return cacheData;
+      }
+      const formSubmissions = await models.FormSubmission.findAll();
       await Promise.all(
         formSubmissions.map(async (submission) => {
           const submissionData = await SubmissionDataService.getData(
@@ -135,42 +131,42 @@ class FormSubmissionService {
           submission.submissionDatas = submissionData;
         })
       );
-    await CacheService.set(cacheKey, formSubmissions, 600);
-    return formSubmissions;
-    // try {
-    //   const formSubmissions = await models.FormSubmission.findAll();
-    //   await Promise.all(
-    //     formSubmissions.map(async (submission) => {
-    //       const submissionData = await SubmissionDataService.getData(
-    //         submission.id
-    //       );
-    //       submission.submissionDatas = submissionData;
-    //     })
-    //   );
-    //   return formSubmissions;
-    // } catch (err) {
-    //   console.error(`Error fetching form submissions: ${err}`);
-    // }
-  };
-
-  getByFormId = async (formId) => {
-    try {
-      const formSubmissions = await models.FormSubmission.findAll({
-        where: { formId }
-      });
-      await Promise.all(
-        formSubmissions.map(async (submission) => {
-          const submissionData = await SubmissionDataService.getData(
-            submission.id
-          );
-          submission.submissionDatas = submissionData;
-        })
-      );
+      await CacheService.set(cacheKey, formSubmissions, 600);
       return formSubmissions;
-    } catch (err) {
-      console.error(`Error fetching form submissions: ${err}`);
-    }
-  };
-}
+      // try {
+      //   const formSubmissions = await models.FormSubmission.findAll();
+      //   await Promise.all(
+      //     formSubmissions.map(async (submission) => {
+      //       const submissionData = await SubmissionDataService.getData(
+      //         submission.id
+      //       );
+      //       submission.submissionDatas = submissionData;
+      //     })
+      //   );
+      //   return formSubmissions;
+      // } catch (err) {
+      //   console.error(`Error fetching form submissions: ${err}`);
+      // }
+    };
+
+    getByFormId = async (formId) => {
+      try {
+        const formSubmissions = await models.FormSubmission.findAll({
+          where: { formId }
+        });
+        await Promise.all(
+          formSubmissions.map(async (submission) => {
+            const submissionData = await SubmissionDataService.getData(
+              submission.id
+            );
+            submission.submissionDatas = submissionData;
+          })
+        );
+        return formSubmissions;
+      } catch (err) {
+        console.error(`Error fetching form submissions: ${err}`);
+      }
+    };
+  }
 
 module.exports = new FormSubmissionService();
