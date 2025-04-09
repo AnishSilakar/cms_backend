@@ -39,4 +39,9 @@ mailQueue.on('failed', async (job, err) => {
     });
 });
 
+mailQueue.on('completed', (job) => {
+    console.log(`Mail send Job completed for ${job.data.to} email address`);
+    job.remove();
+});
+
 module.exports = mailQueue;
