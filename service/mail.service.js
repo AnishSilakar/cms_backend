@@ -12,6 +12,8 @@ class MailService {
         // Configure Nodemailer transporter
         const transporter = nodemailer.createTransport({
           service: 'gmail', // Use your email service (e.g., Gmail, Outlook)
+          host: 'smtp.gmail.com', // SMTP host for Gmail
+          port: 587, // SMTP port for Gmail
           auth: {
             user: process.env.EMAIL_NAME, // Sender address, // Your email address
             pass: process.env.EMAIL_PASSWORD, // Your email password or app-specific password

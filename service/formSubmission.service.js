@@ -6,6 +6,7 @@ const GeneralSetting = require("./generalSetting.service");
 const Helper = require("../helper/helper");
 const cacheKey = "formSubmissionCacheKey";
 const CacheService = require("./cache.service");
+const MailJobService = require("./mailjob.service");
 
 class FormSubmissionService {
   insert = async (data) => {
@@ -76,13 +77,15 @@ class FormSubmissionService {
               <p style="margin: 0; color: #666;">${generalSetting.email} | ${generalSetting.phone}</p>
               <p style="margin: 0; color: #777;">${generalSetting.landmark}</p>
             </div>`;
-          await MailService.sendMail({
-            to: email,
-            subject,
-            body: updatedTemplate,
-            template: "email-template.ejs",
-            emailSignature
-          });
+          // await MailService.sendMail({
+          //   to: email,
+          //   subject,
+          //   body: updatedTemplate,
+          //   template: "email-template.ejs",
+          //   emailSignature
+          // });
+          const mailSendtemplate = "email-template.ejs";
+          await MailJobService.addMailJob(email, subject, updatedTemplate, mailSendtemplate, emailSignature);
         }
       }
     }

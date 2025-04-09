@@ -11,7 +11,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@bull-board/express": "^6.9.0",
     "bcryptjs": "^2.4.3",
+    "bull": "^4.16.5",
     "connect-redis": "^8.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

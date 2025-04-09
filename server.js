@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const { sequelize } = require("./models"); // Import the sequelize instance
 const globalRoutes = require('./routes/global.route');
+const HttpMethodInterceptor = require("./middleware/requestInterceptor.middleware");
 
 dotenv.config();
 const app = express();
@@ -18,6 +19,7 @@ const port = process.env.PORT || 3000;
 
 app.use(cors(corsOptions));
 app.use(express.static("public"));
+app.use(HttpMethodInterceptor)
 
 
 

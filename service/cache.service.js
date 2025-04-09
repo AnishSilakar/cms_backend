@@ -18,6 +18,10 @@ class CacheService {
     }
   }
 
+  static async getAllKeys(){
+    return await redis.keys('central:*');
+  }
+
   static async del(key) {
     return await redis.del(`central:${key}`);
   }
