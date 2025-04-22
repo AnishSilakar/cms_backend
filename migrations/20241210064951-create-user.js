@@ -1,4 +1,7 @@
 'use strict';
+
+const { add } = require('winston');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -21,6 +24,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      roleId:{
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -29,6 +36,15 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+      }
+    });
+    await queryInterface.addConstraint('users', {
+      fields: ['roleId'],
+      type: 'foreign key',
+      name: 'User_Role_Assoc',
+      references:{
+        table: 'roles',
+        field: 'id',
       }
     });
   },
