@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Permission extends Model {
     /**
@@ -11,29 +9,29 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Permission.belongsTo(models.Role, {
-        foreignKey: 'role_id',
-        as: 'role'
-      });
-      Permission.belongsTo(models.Module, {
-        foreignKey: 'module_id',
-        as: 'module'
-      });
-      Permission.belongsTo(models.Submodule, {
-        foreignKey: 'submodule_id',
-        as: 'submodule'
-      });
-      Permission.belongsTo(models.Activity, {
-        foreignKey: 'activity_id',
-        as: 'activity'
-      });
+      // Permission.belongsTo(models.Role, {
+      //   foreignKey: 'role_id',
+      //   as: 'role'
+      // });
+      // Permission.belongsTo(models.Module, {
+      //   foreignKey: 'module_id',
+      //   as: 'module'
+      // });
+      // Permission.belongsTo(models.Submodule, {
+      //   foreignKey: 'submodule_id',
+      //   as: 'submodule'
+      // });
+      // Permission.belongsTo(models.Activity, {
+      //   foreignKey: 'activity_id',
+      //   as: 'activity'
+      // });
     }
   }
   Permission.init({
-    role_id: DataTypes.INTEGER,
-    module_id: DataTypes.INTEGER,
-    submodule_id: DataTypes.INTEGER,
-    activity_id: DataTypes.INTEGER,
+    roleId: DataTypes.INTEGER,
+    moduleId: DataTypes.INTEGER,
+    submoduleId: DataTypes.INTEGER,
+    activityId: DataTypes.INTEGER,
     possession: DataTypes.ENUM('own', 'any'),
     createdAt: {
       type: DataTypes.DATE,

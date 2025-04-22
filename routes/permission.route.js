@@ -3,6 +3,6 @@ const router = express.Router();
 
 const PermissionController = require('../controller/permission.controller');
 
-router.get('/check', PermissionController.insert);
+router.post('/insert', PermissionController.insert);
 
 module.exports = router;

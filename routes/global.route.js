@@ -17,6 +17,7 @@ const formSubmissionRoute = require("./formSubmission.route");
 const statsRoute = require("./stats.route");
 const formTemplate = require("./formTemplate.route");
 const queueRoute = require("./queue.route");
+const permissionRoute = require("./permission.route");
 const router = express.Router();
 
 router.use("/", authRoute);
@@ -37,5 +38,6 @@ router.use("/form", formRoute);
 router.use("/formSubmission", formSubmissionRoute);
 router.use("/formTemplate", formTemplate);
 router.use("/jobs", queueRoute);
+router.use("/permission", permissionRoute);
 
 module.exports = router;
