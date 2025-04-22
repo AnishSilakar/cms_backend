@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   FormTemplate.init({
     formId: DataTypes.INTEGER,
     subject: DataTypes.STRING,
-    template: DataTypes.STRING
+    template: DataTypes.TEXT('long'),
   }, {
     sequelize,
     modelName: 'FormTemplate',
