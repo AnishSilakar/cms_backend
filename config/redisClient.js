@@ -23,7 +23,10 @@ const client = redis.createClient({
   }
 });
 
-client.on('connect', () => console.log('Redis connected'));
+client.on('connect', async () => {
+  console.log('✅ Redis Connected');
+  await client.flushDb(); // Flush the database on connect
+});
 client.on('error', (err) => console.log('Redis Error:', err));
 
 (async () => {

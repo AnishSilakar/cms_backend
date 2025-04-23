@@ -1,5 +1,9 @@
 const models = require('../models');
 const { Permission } = models;
+const moduleCacheKey = "ModulesCacheKey";
+const roleCacheKey = "roleCacheKey";
+const activityCacheKey = "activityCacheKey";
+const CacheService = require("./cache.service");
 
 class PermissionService {
     insert = async (data) => {
@@ -37,26 +41,107 @@ class PermissionService {
     }
 
     getRole = async () => {
-            // const response = await Permission.findAll({
-            //     include: [
-            //         { model: models.Module, as: 'module' },
-            //         { model: models.SubModule, as: 'subModule' },
-            //         { model: models.Activity, as: 'activity' },
-            //         { model: models.Role, as: 'role' }
-            //     ]
-            // });
-            const response = await models.Role.findAll();
-            return response;
-    }   
-    getModule = async () => {
-        return await models.Module.findAll({
+        const cacheData = await CacheService.get(roleCacheKey);
+        if (cacheData) {
+            console.log("Cache hit for Role data");
+            return cacheData;
+        }
+        const response = await models.Role.findAll();
+        await CacheService.set(roleCacheKey, response, 600);
+        return response;
+    }
+    // getModule = async () => {
+    //     // const cacheData = await CacheService.get(moduleCacheKey);
+    //     // if (cacheData) {
+    //     //     console.log("Cache hit for Module and Submodule data");
+    //     //     return cacheData;
+    //     // }
+    //     const response = await models.Module.findAll({
+    //         include: [
+    //             { model: models.SubModule, as: 'subModules' }
+    //         ]
+    //     });
+    //     const actvities = await this.getActivity();
+    //     response.forEach(async (module) => {
+    //         if (module.subModules && module.subModules.length > 0) {
+    //             module.subModules.forEach(async (subModule) => {
+    //                 const act = await this.checkPermission();
+    //                 subModule.activities = act;
+    //             });
+    //         }
+    //         else {
+    //             module.activities = await this.checkPermission();
+    //         }
+    //     });
+    //     // await CacheService.set(moduleCacheKey, response, 600);
+    //     return response;
+    // }
+
+    getModule = async (roleId) => {
+        const newKey = `${moduleCacheKey}-${roleId}`;
+        const cacheData = await CacheService.get(newKey);
+        if (cacheData) {
+            console.log("Cache hit for Module and Submodule data");
+            return cacheData;
+        }
+        const response = await models.Module.findAll({
             include: [
-                { model: models.SubModule, as: 'subModules' },
+                { model: models.SubModule, as: 'subModules' }
             ]
         });
+
+        // Process modules and submodules with promises
+        await Promise.all(
+            response.map(async (module) => {
+                if (module.subModules && module.subModules.length > 0) {
+                    // Process submodules
+                    module.subModules = await Promise.all(
+                        module.subModules.map(async (subModule) => {
+                            const act = await this.checkPermission(roleId, module.id, subModule.id);
+                            subModule.activities = act;
+                            return subModule;
+                        })
+                    );
+                } else {
+                    // Process module activities
+                    const act = await this.checkPermission(roleId, module.id, null);
+                    module.activities = act;
+                }
+            })
+        );
+        await CacheService.set(newKey, response, 600);
+        return response;
     }
+
     getActivity = async () => {
-        return await models.Activity.findAll();
+        const cacheData = await CacheService.get(activityCacheKey);
+        if (cacheData) {
+            console.log("Cache hit for Activity data");
+            return cacheData;
+        }
+        const response = await models.Activity.findAll();
+        await CacheService.set(activityCacheKey, response, 600);
+        return response;
+    }
+
+    checkPermission = async (roleId, moduleId, subModuleId) => {
+        const actvities = await this.getActivity();
+        let newActivity = [];
+        await Promise.all(
+            actvities.map(async (activity) => {
+                const permission = await Permission.findOne({
+                    where: {
+                        roleId: roleId,
+                        moduleId: moduleId,
+                        submoduleId: subModuleId,
+                        activityId: activity.id
+                    }
+                });
+                activity.hasPermission = permission ? true : false;
+                newActivity.push(activity);
+            })
+        );
+        return newActivity;
     }
 }
 

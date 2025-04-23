@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Module.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    activities: DataTypes.VIRTUAL,
   }, {
     sequelize,
     modelName: 'Module',

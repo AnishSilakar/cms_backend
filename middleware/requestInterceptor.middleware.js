@@ -11,6 +11,11 @@ const httpMethodInterceptor = async (req, res, next) => {
                     const newKey = key.substring(getColonIndex + 1);
                     await CacheService.del(newKey);               
                 }
+                if (key.includes('central:moduleCacheKey-')) {
+                    const getColonIndex = key.indexOf(':');
+                    const newKey = key.substring(getColonIndex + 1);
+                    await CacheService.del(newKey);               
+                }
             }
         }
     }

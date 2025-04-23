@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Activity.init({
     name: DataTypes.ENUM('create', 'read', 'update', 'delete'),
+    hasPermission: DataTypes.VIRTUAL,
   }, {
     sequelize,
     modelName: 'Activity',

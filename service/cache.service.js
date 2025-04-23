@@ -27,7 +27,7 @@ class CacheService {
   }
 
   static async flush() {
-    return await redis.flushdb();
+    return await redis.flushDb();
   }
 }
 

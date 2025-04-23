@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   SubModule.init({
     name: DataTypes.STRING,
-    moduleId: DataTypes.INTEGER
+    moduleId: DataTypes.INTEGER,
+    activities: DataTypes.VIRTUAL,
   }, {
     sequelize,
     modelName: 'SubModule',

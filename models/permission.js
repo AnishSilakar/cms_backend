@@ -9,20 +9,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // Permission.belongsTo(models.Role, {
-      //   foreignKey: 'role_id',
-      //   as: 'role'
-      // });
-      // Permission.belongsTo(models.Module, {
-      //   foreignKey: 'module_id',
-      //   as: 'module'
-      // });
+      Permission.belongsTo(models.Role, {
+        foreignKey: 'roleId',
+        as: 'role'
+      });
+      Permission.belongsTo(models.Module, {
+        foreignKey: 'moduleId',
+        as: 'module'
+      });
       // Permission.belongsTo(models.Submodule, {
-      //   foreignKey: 'submodule_id',
+      //   foreignKey: 'submoduleId',
       //   as: 'submodule'
       // });
       // Permission.belongsTo(models.Activity, {
-      //   foreignKey: 'activity_id',
+      //   foreignKey: 'activityId',
       //   as: 'activity'
       // });
     }
