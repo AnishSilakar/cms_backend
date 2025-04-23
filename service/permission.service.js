@@ -35,6 +35,29 @@ class PermissionService {
         };
         await models.Permission.create(data);
     }
+
+    getRole = async () => {
+            // const response = await Permission.findAll({
+            //     include: [
+            //         { model: models.Module, as: 'module' },
+            //         { model: models.SubModule, as: 'subModule' },
+            //         { model: models.Activity, as: 'activity' },
+            //         { model: models.Role, as: 'role' }
+            //     ]
+            // });
+            const response = await models.Role.findAll();
+            return response;
+    }   
+    getModule = async () => {
+        return await models.Module.findAll({
+            include: [
+                { model: models.SubModule, as: 'subModules' },
+            ]
+        });
+    }
+    getActivity = async () => {
+        return await models.Activity.findAll();
+    }
 }
 
 module.exports = new PermissionService();

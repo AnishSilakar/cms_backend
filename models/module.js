@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Module.hasMany(models.SubModule, {
-        foreignKey: 'module_id',
+        foreignKey: 'moduleId',
         as: 'subModules'
       });
       Module.belongsToMany(models.Permission, {

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       SubModule.belongsTo(models.Module, {
-        foreignKey: 'module_id',
+        foreignKey: 'moduleId',
         as: 'module'
       });
       SubModule.belongsToMany(models.Permission, {
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   SubModule.init({
     name: DataTypes.STRING,
-    module_id: DataTypes.INTEGER
+    moduleId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'SubModule',
