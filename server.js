@@ -19,20 +19,17 @@ const port = process.env.PORT || 3000;
 
 app.use(cors(corsOptions));
 app.use(express.static("public"));
-app.use(HttpMethodInterceptor)
-
-
+app.use(HttpMethodInterceptor);
 
 app.use('/api', globalRoutes);
-
 
 // Check database connection before starting the server
 sequelize
   .authenticate()
   .then(() => {
-    console.log("Database connected successfully.");
+    console.log("✅ Database connected successfully.");
     app.listen(port, "0.0.0.0", () => {
-      console.log(`Listening on port ${port}`);
+      console.log(`✅ Listening on port ${port}`);
     });
   })
   .catch((err) => {

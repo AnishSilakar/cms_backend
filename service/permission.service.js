@@ -1,6 +1,5 @@
 const models = require('../models');
 const { Permission } = models;
-const moduleCacheKey = "ModulesCacheKey";
 const roleCacheKey = "roleCacheKey";
 const activityCacheKey = "activityCacheKey";
 const CacheService = require("./cache.service");
@@ -50,40 +49,8 @@ class PermissionService {
         await CacheService.set(roleCacheKey, response, 600);
         return response;
     }
-    // getModule = async () => {
-    //     // const cacheData = await CacheService.get(moduleCacheKey);
-    //     // if (cacheData) {
-    //     //     console.log("Cache hit for Module and Submodule data");
-    //     //     return cacheData;
-    //     // }
-    //     const response = await models.Module.findAll({
-    //         include: [
-    //             { model: models.SubModule, as: 'subModules' }
-    //         ]
-    //     });
-    //     const actvities = await this.getActivity();
-    //     response.forEach(async (module) => {
-    //         if (module.subModules && module.subModules.length > 0) {
-    //             module.subModules.forEach(async (subModule) => {
-    //                 const act = await this.checkPermission();
-    //                 subModule.activities = act;
-    //             });
-    //         }
-    //         else {
-    //             module.activities = await this.checkPermission();
-    //         }
-    //     });
-    //     // await CacheService.set(moduleCacheKey, response, 600);
-    //     return response;
-    // }
 
     getModule = async (roleId) => {
-        const newKey = `${moduleCacheKey}-${roleId}`;
-        const cacheData = await CacheService.get(newKey);
-        if (cacheData) {
-            console.log("Cache hit for Module and Submodule data");
-            return cacheData;
-        }
         const response = await models.Module.findAll({
             include: [
                 { model: models.SubModule, as: 'subModules' }
@@ -109,7 +76,6 @@ class PermissionService {
                 }
             })
         );
-        await CacheService.set(newKey, response, 600);
         return response;
     }
 
