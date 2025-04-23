@@ -7,6 +7,14 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('submodules', [
       {
+        moduleId: 1,
+        name: 'User Setup',
+      },
+      {
+        moduleId: 1,
+        name: 'Role and Permission',
+      },
+      {
         moduleId: 3,
         name: 'Company Profile'
       },

@@ -5,7 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('modules', [
       {
-        name: 'User',
+        name: 'User Management',
         createdAt: new Date(),
         updatedAt: new Date()
       },
