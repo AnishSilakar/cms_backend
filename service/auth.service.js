@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 
 const dotenv = require("dotenv");
 const { storeSingleImage } = require("./image.service");
+const PermissionService = require("./permission.service");
 dotenv.config();
 
 const removeOldTokens = async (userId) => {
@@ -33,7 +34,7 @@ const generateTokens = async (user) => {
   );
   // Store refresh token in database
 
-  const aa = await models.TokenManager.create({
+  await models.TokenManager.create({
     accessToken: token,
     accessExpiresIn: accessFulldate,
     refreshToken: refreshToken,
@@ -70,6 +71,7 @@ module.exports = {
       });
     } else {
       const responsedata = await generateTokens(user);
+      const permissions = await PermissionService.getModule(user.roleId);
       const resData = {
         email: user.email,
         userId: user.id,
@@ -78,6 +80,7 @@ module.exports = {
         expiresIn: responsedata.expiresIn,
         refreshToken: responsedata.refreshToken,
         refreshExpiresIn: responsedata.refreshExpiresIn,
+        permissions: permissions,
         // validTil: expirationDate.toISOString() // Return expiration time in ISO format
       };
       return callBack(null, resData);

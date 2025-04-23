@@ -109,6 +109,18 @@ class PermissionService {
         );
         return newActivity;
     }
+
+    update = async (data) => {
+        const deleteOldPermission = await Permission.destroy({
+            where: {
+                roleId: data.roleId
+            }
+        });
+        if (deleteOldPermission){
+            return await this.insert(data);
+        }
+        return null;
+    }
 }
 
 module.exports = new PermissionService();

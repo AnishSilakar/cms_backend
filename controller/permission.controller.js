@@ -2,6 +2,7 @@ const { get } = require('../routes/permission.route');
 const PermissionService = require('../service/permission.service');
 const moduleCacheKey = "ModulesCacheKey";
 const CacheService = require('../service/cache.service');
+const { update } = require('../service/page.service');
 
 module.exports = {
     insert: async (req, res) => {
@@ -42,6 +43,22 @@ module.exports = {
         try {
             const response = await PermissionService.getActivity();
             return res.status(200).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: `${error.message}` });
+        }
+    },
+    update: async (req, res) => {
+        try {
+            const data = req.body;
+            const response = await PermissionService.update(data);
+            if (response) {
+                const roleId = req.body.roleId;
+                const newKey = `${moduleCacheKey}-${roleId}`;
+                await CacheService.del(newKey);
+                return res.status(200).json({ message: 'Permission updated successfully' });
+            } else {
+                return res.status(400).json({ message: 'Permission update failed' });
+            }
         } catch (error) {
             return res.status(500).json({ message: `${error.message}` });
         }
