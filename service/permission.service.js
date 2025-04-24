@@ -76,7 +76,16 @@ class PermissionService {
                 }
             })
         );
-        return response;
+        const permissionExists = await models.Permission.findOne({
+            where: {
+                roleId: roleId
+            }
+        });
+        const newResponse = {
+            modules: response,
+            permissionExists: permissionExists ? true : false
+        }
+        return newResponse;
     }
 
     getActivity = async () => {
