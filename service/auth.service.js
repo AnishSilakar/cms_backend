@@ -88,7 +88,7 @@ module.exports = {
   },
   register: async (data, callBack) => {
     const { email, password, people } = data;
-    const { dateOfBirth, address, gender, lastName, firstName } = people;
+    const { dateOfBirth, address, gender, lastName, firstName , roleId} = people;
     const hashedPassword = await bcrypt.hash(password, 10);
     const username = firstName.concat(lastName);
     try {
@@ -96,6 +96,7 @@ module.exports = {
         username,
         email,
         password: hashedPassword,
+        roleId
       });
       let image = null;
       if (data?.file) {
