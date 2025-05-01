@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'development';
+
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
